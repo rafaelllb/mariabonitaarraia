@@ -115,6 +115,12 @@
     color: white;
   }
 
+  .dia-btn.desabilitado {
+    opacity: 0.4;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
   /* CONTAINER */
   .container {
     max-width: 480px;
@@ -614,7 +620,15 @@ const CATEGORIA_EMOJIS = {
 // ============================================================
 let dadosRemoto = null;    // Dados do Firebase (produtos, estoque, vendas)
 let carrinho = {};         // { produtoId: quantidade } — em memória, não persiste
-let diaAtual = 1;          // Dia selecionado para ver estoque
+// Dia 1 = 12/06/2026, Dia 2 = 13/06/2026, qualquer outra data = Dia 1
+function detectarDia() {
+  const hoje = new Date();
+  const dia = hoje.getDate();
+  const mes = hoje.getMonth(); // 0-indexed, junho = 5
+  if (mes === 5 && dia === 13) return 2;
+  return 1;
+}
+let diaAtual = detectarDia();
 let carrinhoAberto = true; // Corpo do carrinho visível
 
 // ============================================================
@@ -669,12 +683,8 @@ function atualizarSyncStatus(msg) {
 // ============================================================
 //  SELETOR DE DIA
 // ============================================================
-function selecionarDia(dia) {
-  diaAtual = dia;
-  document.getElementById('btn-dia1').classList.toggle('selecionado', dia === 1);
-  document.getElementById('btn-dia2').classList.toggle('selecionado', dia === 2);
-  renderCardapio();
-}
+// Dia é detectado automaticamente pela data — troca manual desabilitada
+function selecionarDia(dia) { /* bloqueado no cardápio público */ }
 
 // ============================================================
 //  ESTOQUE — calcula disponível (mesma lógica do admin)
@@ -878,6 +888,12 @@ function toast(msg) {
 //  INIT
 // ============================================================
 window.addEventListener('load', () => {
+  // Configura botões de dia: ativo = selecionado, inativo = desabilitado
+  document.getElementById('btn-dia1').classList.toggle('selecionado', diaAtual === 1);
+  document.getElementById('btn-dia1').classList.toggle('desabilitado', diaAtual !== 1);
+  document.getElementById('btn-dia2').classList.toggle('selecionado', diaAtual === 2);
+  document.getElementById('btn-dia2').classList.toggle('desabilitado', diaAtual !== 2);
+
   // Busca dados do Firebase (ou usa fallback)
   buscarDadosFirebase();
 

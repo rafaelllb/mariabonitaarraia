@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Code — Maria Bonita do Arraiá</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #FFF8E1;
+    padding: 20px;
+  }
+  h1 {
+    font-size: 1.6rem;
+    color: #5D4037;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .url {
+    font-size: 0.95rem;
+    color: #8D6E63;
+    margin-bottom: 24px;
+  }
+  #qr-container {
+    background: #fff;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #qr-code canvas {
+    image-rendering: pixelated;
+  }
+  .label {
+    margin-top: 16px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #5D4037;
+  }
+  .sublabel {
+    font-size: 0.8rem;
+    color: #A1887F;
+    margin-top: 4px;
+  }
+  .actions {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+  }
+  button {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  button:active { transform: scale(0.96); }
+  .btn-print { background: #5D4037; color: #fff; }
+  .btn-download { background: #FF6F00; color: #fff; }
+  @media print {
+    body { background: #fff; }
+    .actions, h1, .url { display: none; }
+    #qr-container { box-shadow: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Maria Bonita do Arraia</h1>
+<p class="url">cardapiomariabonita.com.br</p>
+
+<div id="qr-container">
+  <div id="qr-code"></div>
+  <div class="label">Escaneie para ver o Cardapio</div>
+  <div class="sublabel">cardapiomariabonita.com.br</div>
+</div>
+
+<div class="actions">
+  <button class="btn-print" onclick="window.print()">Imprimir</button>
+  <button class="btn-download" onclick="downloadQR()">Salvar PNG</button>
+</div>
+
+<!-- Biblioteca QR Code via CDN (davidshimjs/qrcodejs) -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+// Gera QR Code ao carregar a pagina
+var qr = new QRCode(document.getElementById('qr-code'), {
+  text: 'https://cardapiomariabonita.com.br',
+  width: 280,
+  height: 280,
+  colorDark: '#000000',
+  colorLight: '#ffffff',
+  correctLevel: QRCode.CorrectLevel.M
+});
+
+// Download do QR como PNG
+function downloadQR() {
+  var canvas = document.querySelector('#qr-code canvas');
+  if (!canvas) {
+    alert('QR Code ainda nao foi gerado');
+    return;
+  }
+  var link = document.createElement('a');
+  link.download = 'qrcode-cardapio-maria-bonita.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+</script>
+</body>
+</html>
