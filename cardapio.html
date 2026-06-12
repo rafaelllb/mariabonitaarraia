@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maria Bonita do Arraiá — Cardápio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root {
+    --vermelho: #C0392B;
+    --amarelo: #F5A623;
+    --verde: #27AE60;
+    --azul: #2E6FBF;
+    --laranja: #E8921E;
+    --bg: #F5A623;
+    --card: #FFFDF5;
+    --text: #2C1A0E;
+    --muted: #7A5C30;
+    --border: #DDB86A;
+    --shadow: 0 4px 16px rgba(44,26,14,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    /* Espaço inferior para o carrinho flutuante */
+    padding-bottom: 160px;
+    background-image:
+      linear-gradient(45deg, rgba(0,0,0,0.06) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(0,0,0,0.06) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.06) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.06) 75%);
+    background-size: 30px 30px;
+    background-position: 0 0, 0 15px, 15px -15px, -15px 0px;
+  }
+
+  /* BANDEIRINHAS */
+  .bandeirinhas {
+    width: 100%;
+    height: 32px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--azul) 0px, var(--azul) 24px,
+      var(--amarelo) 24px, var(--amarelo) 48px
+    );
+    clip-path: polygon(0 0, 100% 0, 100% 60%, 97.5% 100%, 95% 60%, 92.5% 100%, 90% 60%, 87.5% 100%, 85% 60%, 82.5% 100%, 80% 60%, 77.5% 100%, 75% 60%, 72.5% 100%, 70% 60%, 67.5% 100%, 65% 60%, 62.5% 100%, 60% 60%, 57.5% 100%, 55% 60%, 52.5% 100%, 50% 60%, 47.5% 100%, 45% 60%, 42.5% 100%, 40% 60%, 37.5% 100%, 35% 60%, 32.5% 100%, 30% 60%, 27.5% 100%, 25% 60%, 22.5% 100%, 20% 60%, 17.5% 100%, 15% 60%, 12.5% 100%, 10% 60%, 7.5% 100%, 5% 60%, 2.5% 100%, 0 60%);
+    flex-shrink: 0;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #D48806 0%, #F5A623 50%, #D48806 100%);
+    color: white;
+    padding: 20px 20px 18px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(139,100,0,0.35);
+    border-bottom: 3px solid var(--azul);
+  }
+
+  header .evento {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    opacity: 0.85;
+    margin-bottom: 4px;
+  }
+
+  header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    line-height: 1.1;
+  }
+
+  header .subtitle {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+
+  /* DIA SELECTOR */
+  .dia-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    margin-top: 16px;
+  }
+
+  .dia-btn {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    background: white;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .dia-btn.selecionado {
+    background: var(--azul);
+    border-color: var(--azul);
+    color: white;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    color: var(--azul);
+    text-align: center;
+    margin: 8px 0 14px;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+  }
+
+  /* MENU ITEMS */
+  .menu-item {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+  }
+
+  .menu-item:active { transform: scale(0.97); }
+
+  .menu-item:not(.esgotado):hover {
+    border-color: var(--amarelo);
+    background: #FFFBF0;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(243,156,18,0.2);
+  }
+
+  .menu-item.esgotado {
+    opacity: 0.45;
+    cursor: not-allowed;
+    filter: grayscale(0.5);
+  }
+
+  .menu-item .emoji {
+    font-size: 2rem;
+    flex-shrink: 0;
+    width: 44px;
+    text-align: center;
+  }
+
+  .menu-item .info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .menu-item .nome {
+    font-weight: 800;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    color: var(--text);
+  }
+
+  .menu-item .detalhe {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .menu-item .preco-area {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .menu-item .preco {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: var(--verde);
+    white-space: nowrap;
+  }
+
+  .menu-item .estoque-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .badge-esgotado {
+    display: inline-block;
+    background: var(--vermelho);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  /* CATEGORIA SEPARATOR */
+  .categoria {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0 10px;
+    padding: 0 4px;
+  }
+
+  .categoria span {
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.85rem;
+    color: var(--azul);
+    white-space: nowrap;
+  }
+
+  .categoria::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--border) 0 6px, transparent 6px 12px);
+  }
+
+  /* CARRINHO FLUTUANTE */
+  .carrinho-flutuante {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 3px solid var(--amarelo);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+    z-index: 100;
+    max-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .carrinho-flutuante.escondido {
+    transform: translateY(100%);
+  }
+
+  .carrinho-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #FFF9E6, #FFF3CC);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .carrinho-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Fredoka One', cursive;
+    color: var(--laranja);
+    font-size: 1rem;
+  }
+
+  .carrinho-badge {
+    background: var(--vermelho);
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 800;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .carrinho-header-total {
+    font-family: 'Fredoka One', cursive;
+    color: var(--verde);
+    font-size: 1.2rem;
+  }
+
+  .carrinho-corpo {
+    padding: 0 16px 16px;
+    overflow-y: auto;
+    max-height: 40vh;
+  }
+
+  .carrinho-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .carrinho-item:last-child { border-bottom: none; }
+
+  .ci-nome { font-weight: 700; font-size: 0.85rem; flex: 1; }
+  .ci-qtd {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-qtd {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .btn-menos { background: #FDECEA; color: var(--vermelho); }
+  .btn-mais { background: #E8F8EF; color: var(--verde); }
+  .qtd-num { font-weight: 800; width: 22px; text-align: center; font-size: 0.95rem; }
+  .ci-subtotal { font-weight: 800; color: var(--verde); font-size: 0.88rem; margin-left: 8px; white-space: nowrap; }
+
+  .carrinho-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0 4px;
+    border-top: 2px solid var(--amarelo);
+    margin-top: 4px;
+  }
+
+  .carrinho-total-label { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--text); }
+  .carrinho-total-valor { font-family: 'Fredoka One', cursive; font-size: 1.4rem; color: var(--verde); }
+
+  /* PIX SECTION */
+  .pix-section {
+    background: linear-gradient(135deg, #E8F8EF, #D5F5E3);
+    border: 2px solid #A9DFBF;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 24px 0 16px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(39,174,96,0.15);
+  }
+
+  .pix-section .pix-titulo {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: var(--verde);
+    margin-bottom: 6px;
+  }
+
+  .pix-section .pix-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .pix-chave-box {
+    background: white;
+    border: 2px dashed var(--verde);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    font-family: 'Nunito', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    word-break: break-all;
+    user-select: all;
+  }
+
+  .btn-copiar {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--verde), #1E8449);
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 14px rgba(39,174,96,0.35);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .btn-copiar:active { transform: scale(0.97); }
+  .btn-copiar.copiado { background: linear-gradient(135deg, #1E8449, #145A32); }
+
+  .btn-limpar {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: #FDECEA;
+    color: var(--vermelho);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-top: 8px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* LOADING */
+  .loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+  }
+
+  .loading .spinner {
+    font-size: 2.5rem;
+    animation: spin 1.5s linear infinite;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--azul);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    z-index: 9999;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 20px 16px 30px;
+    font-size: 0.75rem;
+    color: var(--muted);
+    opacity: 0.7;
+  }
+
+  .decoracao-topo {
+    text-align: center;
+    font-size: 1.4rem;
+    letter-spacing: 6px;
+    margin-top: 14px;
+    opacity: 0.8;
+  }
+
+  /* SYNC STATUS */
+  .sync-status {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--muted);
+    opacity: 0.6;
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="bandeirinhas"></div>
+
+<header>
+  <div class="evento">8o Arraia do Clube</div>
+  <h1>Maria Bonita<br>do Arraia</h1>
+  <div class="subtitle">Cardapio da Barraca</div>
+</header>
+
+<div class="container">
+  <div class="decoracao-topo">🎪 🌽 🔥 🌽 🎪</div>
+
+  <!-- Seletor de dia para ver estoque correto -->
+  <div class="dia-selector">
+    <button class="dia-btn selecionado" id="btn-dia1" onclick="selecionarDia(1)">📅 Dia 1</button>
+    <button class="dia-btn" id="btn-dia2" onclick="selecionarDia(2)">📅 Dia 2</button>
+  </div>
+
+  <div class="section-title">🍽️ Nosso Cardapio</div>
+
+  <!-- Cardápio renderizado dinamicamente -->
+  <div id="cardapio-lista">
+    <div class="loading">
+      <span class="spinner">🌽</span>
+      Carregando cardapio...
+    </div>
+  </div>
+
+  <!-- PIX -->
+  <div class="pix-section">
+    <div class="pix-titulo">💰 Pague via PIX</div>
+    <div class="pix-desc">Copie a chave abaixo e faca o pagamento pelo app do seu banco</div>
+    <div class="pix-chave-box" id="pix-chave">SUA_CHAVE_PIX_AQUI</div>
+    <button class="btn-copiar" id="btn-copiar" onclick="copiarPix()">
+      📋 Copiar Chave PIX
+    </button>
+  </div>
+
+  <div class="sync-status" id="sync-status"></div>
+</div>
+
+<footer>
+  Maria Bonita do Arraia — 8o Arraia do Clube Nova Mutum
+</footer>
+
+<!-- CARRINHO FLUTUANTE -->
+<div class="carrinho-flutuante escondido" id="carrinho">
+  <div class="carrinho-header" onclick="toggleCarrinhoCorpo()">
+    <div class="carrinho-header-left">
+      🛒 Seu Pedido
+      <span class="carrinho-badge" id="carrinho-count">0</span>
+    </div>
+    <span class="carrinho-header-total" id="carrinho-total-header">R$ 0,00</span>
+  </div>
+  <div class="carrinho-corpo" id="carrinho-corpo">
+    <div id="carrinho-itens"></div>
+    <div class="carrinho-total-row">
+      <span class="carrinho-total-label">Total:</span>
+      <span class="carrinho-total-valor" id="carrinho-total-valor">R$ 0,00</span>
+    </div>
+    <button class="btn-limpar" onclick="limparCarrinho()">🗑️ Limpar Pedido</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+//  CONFIGURACAO
+// ============================================================
+// URL do Firebase Realtime Database — path PÚBLICO (somente leitura).
+// Aponta para /barraca_public que contém apenas produtos e estoque,
+// sem dados financeiros (vendas completas, caixa, sangrias).
+// Nenhum secret necessário — as Security Rules permitem .read: true neste path.
+const FIREBASE_URL = 'https://mbarraia-default-rtdb.firebaseio.com/barraca_public.json';
+
+// Chave PIX — substituir pelo valor real
+// TODO [ESTIGMERGIA]: Substituir pela chave PIX real
+// - Rafael vai informar a chave depois
+// - Trocar aqui E no elemento #pix-chave no HTML acima
+const CHAVE_PIX = 'SUA_CHAVE_PIX_AQUI';
+
+// Cardápio fallback caso Firebase esteja offline
+// Garante que o cliente sempre veja o cardápio, mesmo sem conexão
+const PRODUTOS_FALLBACK = [
+  { id:'caldo_frango',    emoji:'🍗', nome:'Caldo de Frango 300ml',           preco:20, insumo:'caldo_frango',    qtdPorVenda:1 },
+  { id:'caldo_calabresa', emoji:'🥩', nome:'Caldo Carne c/ Calabresa 300ml',  preco:20, insumo:'caldo_calabresa', qtdPorVenda:1 },
+  { id:'milho_cozido',    emoji:'🌽', nome:'Milho Cozido',                    preco:3,  insumo:'milho_cozido',    qtdPorVenda:1 },
+  { id:'munguza',         emoji:'🟡', nome:'Mingau de Milho (Munguza) 250ml', preco:12, insumo:'munguza',         qtdPorVenda:1 },
+  { id:'canjica',         emoji:'🍚', nome:'Canjica 250ml',                   preco:15, insumo:'canjica',         qtdPorVenda:1 },
+  { id:'chocolate',       emoji:'🍫', nome:'Chocolate Quente 180ml',          preco:15, insumo:'chocolate',       qtdPorVenda:1 },
+  { id:'cafe',            emoji:'☕', nome:'Cafe 180ml',                      preco:3,  insumo:'cafe',            qtdPorVenda:1 },
+];
+
+// Categorias para agrupar os itens do cardápio
+const CATEGORIAS = {
+  'caldo_frango': 'Caldos',
+  'caldo_calabresa': 'Caldos',
+  'milho_cozido': 'Milho & Derivados',
+  'munguza': 'Milho & Derivados',
+  'canjica': 'Milho & Derivados',
+  'chocolate': 'Bebidas Quentes',
+  'cafe': 'Bebidas Quentes',
+};
+
+const CATEGORIA_EMOJIS = {
+  'Caldos': '🍲',
+  'Milho & Derivados': '🌽',
+  'Bebidas Quentes': '☕',
+};
+
+// ============================================================
+//  ESTADO
+// ============================================================
+let dadosRemoto = null;    // Dados do Firebase (produtos, estoque, vendas)
+let carrinho = {};         // { produtoId: quantidade } — em memória, não persiste
+let diaAtual = 1;          // Dia selecionado para ver estoque
+let carrinhoAberto = true; // Corpo do carrinho visível
+
+// ============================================================
+//  FIREBASE — LEITURA
+// ============================================================
+function buscarDadosFirebase() {
+  if (!FIREBASE_URL || FIREBASE_URL.includes('SEU-PROJETO')) {
+    // Firebase não configurado — usa fallback
+    usarFallback();
+    return;
+  }
+
+  fetch(FIREBASE_URL)
+    .then(resp => {
+      if (!resp.ok) throw new Error('Status ' + resp.status);
+      return resp.json();
+    })
+    .then(dados => {
+      if (dados && dados.produtos) {
+        dadosRemoto = dados;
+        renderCardapio();
+        atualizarSyncStatus('Atualizado');
+      } else {
+        // Firebase existe mas sem dados — usa fallback
+        usarFallback();
+      }
+    })
+    .catch(err => {
+      console.warn('Firebase indisponivel:', err.message);
+      if (!dadosRemoto) usarFallback();
+      atualizarSyncStatus('Offline');
+    });
+}
+
+function usarFallback() {
+  // Constrói uma estrutura mínima para o cardápio funcionar sem Firebase
+  dadosRemoto = {
+    produtos: PRODUTOS_FALLBACK,
+    insumos: [],
+    estoque_inicial: {},
+    vendas: [],
+  };
+  renderCardapio();
+  atualizarSyncStatus('Sem conexao — precos podem estar desatualizados');
+}
+
+function atualizarSyncStatus(msg) {
+  const el = document.getElementById('sync-status');
+  if (el) el.textContent = msg;
+}
+
+// ============================================================
+//  SELETOR DE DIA
+// ============================================================
+function selecionarDia(dia) {
+  diaAtual = dia;
+  document.getElementById('btn-dia1').classList.toggle('selecionado', dia === 1);
+  document.getElementById('btn-dia2').classList.toggle('selecionado', dia === 2);
+  renderCardapio();
+}
+
+// ============================================================
+//  ESTOQUE — calcula disponível (mesma lógica do admin)
+// ============================================================
+function calcularEstoqueDisponivel() {
+  if (!dadosRemoto || !dadosRemoto.estoque_inicial) return {};
+  const inicial = dadosRemoto.estoque_inicial[diaAtual] || {};
+  const vendas = (dadosRemoto.vendas || []).filter(v => v.dia === diaAtual && !v.estornada);
+  const resultado = { ...inicial };
+
+  vendas.forEach(venda => {
+    (venda.itens || []).forEach(item => {
+      const prod = dadosRemoto.produtos.find(p => p.id === item.id);
+      if (prod) {
+        resultado[prod.insumo] = (resultado[prod.insumo] || 0) - (prod.qtdPorVenda * item.qtd);
+      }
+    });
+  });
+
+  return resultado;
+}
+
+// ============================================================
+//  RENDERIZAR CARDÁPIO
+// ============================================================
+function renderCardapio() {
+  if (!dadosRemoto) return;
+
+  const container = document.getElementById('cardapio-lista');
+  const estoque = calcularEstoqueDisponivel();
+  const temEstoque = Object.keys(estoque).length > 0; // Firebase com dados de estoque?
+
+  let html = '';
+  let categoriaAtual = '';
+
+  dadosRemoto.produtos.forEach(p => {
+    // Agrupar por categoria
+    const cat = CATEGORIAS[p.id] || 'Outros';
+    if (cat !== categoriaAtual) {
+      categoriaAtual = cat;
+      const emoji = CATEGORIA_EMOJIS[cat] || '🍴';
+      html += `<div class="categoria"><span>${emoji} ${cat}</span></div>`;
+    }
+
+    const dispInsumo = estoque[p.insumo];
+    const disp = dispInsumo !== undefined ? dispInsumo : null;
+    const esgotado = temEstoque && disp !== null && disp < p.qtdPorVenda;
+
+    html += `
+      <div class="menu-item ${esgotado ? 'esgotado' : ''}"
+           onclick="${esgotado ? '' : `adicionarAoCarrinho('${p.id}')`}">
+        <span class="emoji">${p.emoji}</span>
+        <div class="info">
+          <div class="nome">${p.nome}</div>
+          ${esgotado
+            ? '<div class="detalhe"><span class="badge-esgotado">ESGOTADO</span></div>'
+            : (temEstoque && disp !== null
+              ? `<div class="detalhe">${disp} disponiveis</div>`
+              : '<div class="detalhe">Toque para adicionar</div>'
+            )
+          }
+        </div>
+        <div class="preco-area">
+          <div class="preco">R$ ${p.preco.toFixed(2).replace('.',',')}</div>
+        </div>
+      </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+// ============================================================
+//  CARRINHO
+// ============================================================
+function adicionarAoCarrinho(pid) {
+  carrinho[pid] = (carrinho[pid] || 0) + 1;
+  renderCarrinho();
+  toast('Adicionado ao pedido!');
+}
+
+function alterarQtd(pid, delta) {
+  carrinho[pid] = (carrinho[pid] || 0) + delta;
+  if (carrinho[pid] <= 0) delete carrinho[pid];
+  renderCarrinho();
+}
+
+function limparCarrinho() {
+  carrinho = {};
+  renderCarrinho();
+}
+
+function renderCarrinho() {
+  const ids = Object.keys(carrinho);
+  const carrinhoEl = document.getElementById('carrinho');
+  const itensEl = document.getElementById('carrinho-itens');
+  const countEl = document.getElementById('carrinho-count');
+  const totalHeaderEl = document.getElementById('carrinho-total-header');
+  const totalValorEl = document.getElementById('carrinho-total-valor');
+
+  if (ids.length === 0) {
+    carrinhoEl.classList.add('escondido');
+    return;
+  }
+
+  carrinhoEl.classList.remove('escondido');
+
+  let total = 0;
+  let totalItens = 0;
+
+  itensEl.innerHTML = ids.map(pid => {
+    const prod = dadosRemoto.produtos.find(p => p.id === pid);
+    if (!prod) return '';
+    const qtd = carrinho[pid];
+    const sub = prod.preco * qtd;
+    total += sub;
+    totalItens += qtd;
+    return `
+      <div class="carrinho-item">
+        <span class="ci-nome">${prod.emoji} ${prod.nome}</span>
+        <div class="ci-qtd">
+          <button class="btn-qtd btn-menos" onclick="alterarQtd('${pid}',-1)">−</button>
+          <span class="qtd-num">${qtd}</span>
+          <button class="btn-qtd btn-mais" onclick="alterarQtd('${pid}',1)">+</button>
+        </div>
+        <span class="ci-subtotal">R$ ${sub.toFixed(2).replace('.',',')}</span>
+      </div>`;
+  }).join('');
+
+  countEl.textContent = totalItens;
+  totalHeaderEl.textContent = 'R$ ' + total.toFixed(2).replace('.',',');
+  totalValorEl.textContent = 'R$ ' + total.toFixed(2).replace('.',',');
+}
+
+function toggleCarrinhoCorpo() {
+  const corpo = document.getElementById('carrinho-corpo');
+  carrinhoAberto = !carrinhoAberto;
+  corpo.style.display = carrinhoAberto ? 'block' : 'none';
+}
+
+// ============================================================
+//  PIX — COPIAR CHAVE
+// ============================================================
+function copiarPix() {
+  const btn = document.getElementById('btn-copiar');
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(CHAVE_PIX).then(() => {
+      feedbackCopiado(btn);
+    }).catch(() => {
+      fallbackCopiar(btn);
+    });
+  } else {
+    fallbackCopiar(btn);
+  }
+}
+
+function fallbackCopiar(btn) {
+  const textarea = document.createElement('textarea');
+  textarea.value = CHAVE_PIX;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    feedbackCopiado(btn);
+  } catch (err) {
+    const chaveEl = document.getElementById('pix-chave');
+    const range = document.createRange();
+    range.selectNodeContents(chaveEl);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    btn.textContent = '👆 Selecione e copie manualmente';
+    setTimeout(() => { btn.innerHTML = '📋 Copiar Chave PIX'; }, 3000);
+  }
+  document.body.removeChild(textarea);
+}
+
+function feedbackCopiado(btn) {
+  btn.innerHTML = '✅ Copiado!';
+  btn.classList.add('copiado');
+  setTimeout(() => {
+    btn.innerHTML = '📋 Copiar Chave PIX';
+    btn.classList.remove('copiado');
+  }, 2000);
+}
+
+// ============================================================
+//  TOAST (notificação no topo — não conflita com carrinho)
+// ============================================================
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 1500);
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+window.addEventListener('load', () => {
+  // Busca dados do Firebase (ou usa fallback)
+  buscarDadosFirebase();
+
+  // Polling a cada 30s para atualizar estoque em tempo real
+  setInterval(buscarDadosFirebase, 30000);
+});
+</script>
+</body>
+</html>

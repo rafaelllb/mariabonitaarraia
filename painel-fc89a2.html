@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌽 Barraca da Vila — Festa Junina</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root {
+    --vermelho: #C0392B;
+    --amarelo: #F5A623;
+    --verde: #27AE60;
+    --azul: #2E6FBF;
+    --laranja: #E8921E;
+    --roxo: #8E44AD;
+    --bg: #F5A623;
+    --card: #FFFDF5;
+    --text: #2C1A0E;
+    --muted: #7A5C30;
+    --border: #DDB86A;
+    --shadow: 0 4px 16px rgba(44,26,14,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    background-image:
+      linear-gradient(45deg, rgba(0,0,0,0.06) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(0,0,0,0.06) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.06) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.06) 75%);
+    background-size: 30px 30px;
+    background-position: 0 0, 0 15px, 15px -15px, -15px 0px;
+  }
+
+  /* BANDEIRINHAS TOPO */
+  .bandeirinhas {
+    width: 100%;
+    height: 32px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--azul) 0px, var(--azul) 24px,
+      var(--amarelo) 24px, var(--amarelo) 48px
+    );
+    clip-path: polygon(0 0, 100% 0, 100% 60%, 97.5% 100%, 95% 60%, 92.5% 100%, 90% 60%, 87.5% 100%, 85% 60%, 82.5% 100%, 80% 60%, 77.5% 100%, 75% 60%, 72.5% 100%, 70% 60%, 67.5% 100%, 65% 60%, 62.5% 100%, 60% 60%, 57.5% 100%, 55% 60%, 52.5% 100%, 50% 60%, 47.5% 100%, 45% 60%, 42.5% 100%, 40% 60%, 37.5% 100%, 35% 60%, 32.5% 100%, 30% 60%, 27.5% 100%, 25% 60%, 22.5% 100%, 20% 60%, 17.5% 100%, 15% 60%, 12.5% 100%, 10% 60%, 7.5% 100%, 5% 60%, 2.5% 100%, 0 60%);
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  header {
+    background: linear-gradient(135deg, #D48806 0%, #F5A623 50%, #D48806 100%);
+    color: white;
+    padding: 16px 20px 14px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(139,100,0,0.35);
+    position: relative;
+    border-bottom: 3px solid var(--azul);
+  }
+
+  header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.7rem;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+  }
+
+  header .subtitle {
+    font-size: 0.8rem;
+    opacity: 0.85;
+    margin-top: 2px;
+  }
+
+  .dia-badge {
+    display: inline-block;
+    background: var(--amarelo);
+    color: var(--text);
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-top: 6px;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    background: #2E6FBF;
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav::-webkit-scrollbar { display: none; }
+
+  nav button {
+    flex: 1;
+    min-width: 80px;
+    padding: 12px 8px 10px;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  nav button .nav-icon { font-size: 1.2rem; }
+
+  nav button.active {
+    color: var(--amarelo);
+    border-bottom-color: var(--amarelo);
+    background: rgba(245,166,35,0.15);
+  }
+
+  nav button:hover:not(.active) {
+    color: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.05);
+  }
+
+  /* TELAS */
+  .tela { display: none; padding: 16px; max-width: 600px; margin: 0 auto; }
+  .tela.ativa { display: block; }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+
+  .card-titulo {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    color: var(--azul);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* SELECTOR DIA */
+  .dia-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .dia-btn {
+    flex: 1;
+    padding: 14px;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    background: white;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .dia-btn.selecionado {
+    background: var(--azul);
+    border-color: var(--azul);
+    color: white;
+  }
+
+  /* PDV GRID */
+  .pdv-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .pdv-item {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pdv-item:active { transform: scale(0.95); }
+
+  .pdv-item.sem-estoque {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(0.6);
+  }
+
+  .pdv-item .emoji { font-size: 2rem; display: block; margin-bottom: 6px; }
+  .pdv-item .nome { font-weight: 800; font-size: 0.82rem; line-height: 1.2; margin-bottom: 4px; }
+  .pdv-item .preco { color: var(--verde); font-weight: 800; font-size: 1rem; }
+  .pdv-item .estoque-mini {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 0.65rem;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .pdv-item:not(.sem-estoque):hover {
+    border-color: var(--amarelo);
+    background: #FFFBF0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(243,156,18,0.2);
+  }
+
+  /* CARRINHO */
+  .carrinho {
+    background: linear-gradient(135deg, #FFF9E6, #FFF3CC);
+    border: 2px solid var(--amarelo);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+
+  .carrinho-titulo {
+    font-family: 'Fredoka One', cursive;
+    color: var(--laranja);
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .carrinho-vazio {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    padding: 10px;
+  }
+
+  .carrinho-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .carrinho-item:last-child { border-bottom: none; }
+
+  .ci-nome { font-weight: 700; font-size: 0.88rem; flex: 1; }
+  .ci-qtd {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-qtd {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    font-size: 1.4rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    /* touch-friendly */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .btn-menos { background: #FDECEA; color: var(--vermelho); }
+  .btn-mais { background: #E8F8EF; color: var(--verde); }
+  .qtd-num { font-weight: 800; width: 24px; text-align: center; }
+  .ci-subtotal { font-weight: 800; color: var(--verde); font-size: 0.9rem; margin-left: 10px; }
+
+  .carrinho-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 2px solid var(--amarelo);
+  }
+
+  .total-label { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--text); }
+  .total-valor { font-family: 'Fredoka One', cursive; font-size: 1.5rem; color: var(--verde); }
+
+  /* BOTOES */
+  .btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn:active { transform: scale(0.97); }
+
+  .btn-vender {
+    background: linear-gradient(135deg, var(--verde), #1E8449);
+    color: white;
+    font-size: 1.1rem;
+    padding: 18px;
+    box-shadow: 0 4px 14px rgba(39,174,96,0.35);
+  }
+
+  .btn-vender:disabled {
+    background: #ccc;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  .btn-secundario {
+    background: white;
+    color: var(--text);
+    border: 2px solid var(--border);
+    padding: 12px;
+  }
+
+  .btn-perigo {
+    background: linear-gradient(135deg, var(--vermelho), #922B21);
+    color: white;
+  }
+
+  .btn-info {
+    background: linear-gradient(135deg, var(--azul), #1B4F8A);
+    color: white;
+  }
+
+  /* DASHBOARD STATS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  .stat-card.destaque {
+    background: linear-gradient(135deg, var(--verde), #1E8449);
+    color: white;
+    border-color: transparent;
+    grid-column: 1 / -1;
+  }
+
+  .stat-valor {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem;
+    display: block;
+  }
+
+  .stat-card.destaque .stat-valor { font-size: 2rem; }
+
+  .stat-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    opacity: 0.75;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  /* ESTOQUE */
+  .estoque-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .estoque-item:last-child { border-bottom: none; }
+
+  .estoque-emoji { font-size: 1.6rem; }
+  .estoque-info { flex: 1; }
+  .estoque-nome { font-weight: 700; font-size: 0.9rem; }
+  .estoque-detalhe { font-size: 0.75rem; color: var(--muted); }
+
+  .estoque-barra-wrap {
+    width: 80px;
+    height: 8px;
+    background: #EEE;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+
+  .estoque-barra {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s;
+  }
+
+  .estoque-valor { font-weight: 800; font-size: 0.95rem; text-align: right; min-width: 50px; }
+
+  /* HISTORICO */
+  .venda-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+
+  .venda-hora { color: var(--muted); font-size: 0.75rem; }
+  .venda-itens { font-weight: 600; flex: 1; margin: 0 10px; }
+  .venda-valor { font-weight: 800; color: var(--verde); }
+
+  /* CONFIGURACAO */
+  .config-section { margin-bottom: 20px; }
+  .config-label {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  input[type="number"], input[type="text"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    background: white;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input:focus { border-color: var(--amarelo); }
+
+  .produto-config-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+
+  .pci-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .pci-emoji { font-size: 1.5rem; }
+  .pci-nome { font-weight: 700; font-size: 0.95rem; flex: 1; }
+
+  .pci-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .pci-field label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #2E6FBF;
+    color: white;
+    padding: 14px 24px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 9999;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.sucesso { background: linear-gradient(135deg, var(--verde), #1E8449); }
+  .toast.erro { background: linear-gradient(135deg, var(--vermelho), #922B21); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.aberto { display: flex; }
+
+  .modal {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: modalIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .modal h2 {
+    font-family: 'Fredoka One', cursive;
+    color: var(--verde);
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .modal-itens {
+    background: #F8F8F8;
+    border-radius: 10px;
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 0.88rem;
+  }
+
+  .modal-total {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem;
+    color: var(--verde);
+    text-align: center;
+    margin: 12px 0;
+  }
+
+  .modal-btns { display: flex; gap: 10px; margin-top: 14px; }
+  .modal-btns .btn { flex: 1; }
+
+  /* RELATORIO */
+  .rel-section {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+
+  .rel-titulo {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    color: var(--azul);
+    margin-bottom: 12px;
+    border-bottom: 2px dashed var(--border);
+    padding-bottom: 8px;
+  }
+
+  .rel-linha {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 0.88rem;
+    border-bottom: 1px solid #F0F0F0;
+  }
+
+  .rel-linha:last-child { border-bottom: none; }
+  .rel-linha.total { font-weight: 800; font-size: 1rem; color: var(--verde); }
+  .rel-linha.custo { color: var(--vermelho); }
+
+  /* BADGE ALERTA ESTOQUE */
+  .alerta-badge {
+    display: inline-block;
+    background: var(--vermelho);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 6px;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  .sem-dados {
+    text-align: center;
+    color: var(--muted);
+    padding: 30px 20px;
+    font-size: 0.9rem;
+  }
+
+  .sem-dados .emoji-big { font-size: 3rem; display: block; margin-bottom: 10px; }
+
+  /* BOTAO ESTORNO */
+  .btn-estorno {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.2s;
+    margin-left: 6px;
+  }
+
+  .btn-estorno:hover {
+    background: #FDECEA;
+  }
+
+  hr.festivo {
+    border: none;
+    border-top: 2px dashed var(--border);
+    margin: 14px 0;
+  }
+
+  .tag-dia {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-right: 6px;
+  }
+
+  .tag-dia1 { background: #FFF0CC; color: #B87D00; }
+  .tag-dia2 { background: #D0E4F7; color: #2E6FBF; }
+</style>
+</head>
+<body>
+
+<div class="bandeirinhas"></div>
+
+<header>
+  <h1>🌽 Barraca da Vila</h1>
+  <div class="subtitle">Festa Junina · Controle de Vendas</div>
+  <div class="dia-badge" id="header-dia">Selecione o dia de operação</div>
+</header>
+
+<nav>
+  <button class="active" onclick="ir('pdv')" id="nav-pdv">
+    <span class="nav-icon">🛒</span>Vender
+  </button>
+  <button onclick="ir('caixa')" id="nav-caixa">
+    <span class="nav-icon">💵</span>Caixa
+  </button>
+  <button onclick="ir('dashboard')" id="nav-dashboard">
+    <span class="nav-icon">📊</span>Painel
+  </button>
+  <button onclick="ir('estoque')" id="nav-estoque">
+    <span class="nav-icon">📦</span>Estoque
+  </button>
+  <button onclick="ir('historico')" id="nav-historico">
+    <span class="nav-icon">📋</span>Histórico
+  </button>
+  <button onclick="ir('relatorio')" id="nav-relatorio">
+    <span class="nav-icon">💰</span>Resultado
+  </button>
+  <button onclick="ir('config')" id="nav-config">
+    <span class="nav-icon">⚙️</span>Config
+  </button>
+</nav>
+
+<!-- ==================== PDV ==================== -->
+<div id="tela-pdv" class="tela ativa">
+  <div class="dia-selector">
+    <button class="dia-btn" id="btn-dia1" onclick="selecionarDia(1)">📅 Dia 1</button>
+    <button class="dia-btn" id="btn-dia2" onclick="selecionarDia(2)">📅 Dia 2</button>
+  </div>
+
+  <div class="pdv-grid" id="pdv-grid"></div>
+
+  <div class="carrinho" id="carrinho">
+    <div class="carrinho-titulo">🛒 Carrinho</div>
+    <div id="carrinho-itens"><div class="carrinho-vazio">Toque em um produto para adicionar</div></div>
+    <div class="carrinho-total" id="carrinho-total" style="display:none">
+      <span class="total-label">Total:</span>
+      <span class="total-valor" id="total-valor">R$ 0,00</span>
+    </div>
+  </div>
+
+  <button class="btn btn-vender" id="btn-finalizar" onclick="abrirModal()" disabled>
+    ✅ Finalizar Venda
+  </button>
+</div>
+
+<!-- ==================== CAIXA ==================== -->
+<div id="tela-caixa" class="tela">
+  <div class="dia-selector">
+    <button class="dia-btn" id="cx-dia1" onclick="selecionarDia(1)">📅 Dia 1</button>
+    <button class="dia-btn" id="cx-dia2" onclick="selecionarDia(2)">📅 Dia 2</button>
+  </div>
+  <div id="caixa-content"></div>
+</div>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div id="tela-dashboard" class="tela">
+  <div class="dia-selector">
+    <button class="dia-btn" id="db-dia1" onclick="selecionarDia(1)">📅 Dia 1</button>
+    <button class="dia-btn" id="db-dia2" onclick="selecionarDia(2)">📅 Dia 2</button>
+    <button class="dia-btn" id="db-total" onclick="selecionarDia(0)">🏆 Total</button>
+  </div>
+  <div id="dashboard-content"></div>
+</div>
+
+<!-- ==================== ESTOQUE ==================== -->
+<div id="tela-estoque" class="tela">
+  <div class="dia-selector">
+    <button class="dia-btn" id="est-dia1" onclick="selecionarDia(1)">📅 Dia 1</button>
+    <button class="dia-btn" id="est-dia2" onclick="selecionarDia(2)">📅 Dia 2</button>
+  </div>
+  <div class="card">
+    <div class="card-titulo">📦 Estoque de Insumos</div>
+    <div id="estoque-lista"></div>
+  </div>
+</div>
+
+<!-- ==================== HISTORICO ==================== -->
+<div id="tela-historico" class="tela">
+  <div class="dia-selector">
+    <button class="dia-btn" id="hist-dia1" onclick="selecionarDia(1)">📅 Dia 1</button>
+    <button class="dia-btn" id="hist-dia2" onclick="selecionarDia(2)">📅 Dia 2</button>
+    <button class="dia-btn" id="hist-total" onclick="selecionarDia(0)">📋 Todas</button>
+  </div>
+  <div id="historico-lista"></div>
+</div>
+
+<!-- ==================== RELATORIO ==================== -->
+<div id="tela-relatorio" class="tela">
+  <div id="relatorio-content"></div>
+</div>
+
+<!-- ==================== CONFIG ==================== -->
+<div id="tela-config" class="tela">
+  <div class="card">
+    <div class="card-titulo">💾 Backup de Dados</div>
+    <p style="font-size:0.82rem;color:var(--muted);margin-bottom:12px;">Exporte seus dados para não perder vendas. Importe para restaurar.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-info" onclick="exportarDados()" style="flex:1;min-width:140px;">
+        📥 Exportar JSON
+      </button>
+      <label class="btn btn-secundario" style="flex:1;min-width:140px;cursor:pointer;">
+        📤 Importar JSON
+        <input type="file" accept=".json" onchange="importarDados(event)" style="display:none;">
+      </label>
+    </div>
+    <div id="backup-status" style="font-size:0.75rem;color:var(--muted);margin-top:10px;text-align:center;"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-titulo">🛍️ Cardápio e Preços</div>
+    <div id="config-produtos"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-titulo">📦 Estoque Inicial por Dia</div>
+    <p style="font-size:0.82rem;color:var(--muted);margin-bottom:12px;">Defina a quantidade disponível de cada insumo no início de cada dia de festa.</p>
+    <div id="config-estoque"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-titulo">🔥 Firebase</div>
+    <p style="font-size:0.82rem;color:var(--muted);margin-bottom:12px;">
+      Conecte ao Firebase para sincronizar dados entre dispositivos. O secret fica salvo apenas neste navegador.
+    </p>
+    <div id="firebase-status" style="font-size:0.82rem;margin-bottom:12px;"></div>
+    <button class="btn btn-info" onclick="abrirModalFirebase()">
+      🔧 Configurar Firebase
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="card-titulo">⚠️ Zona de Perigo</div>
+    <button class="btn btn-perigo" onclick="confirmarReset()">🗑️ Apagar Todos os Dados</button>
+  </div>
+</div>
+
+<!-- ==================== MODAL CONFIRMAÇÃO ==================== -->
+<div class="modal-overlay" id="modal-venda">
+  <div class="modal">
+    <h2>🎉 Confirmar Venda?</h2>
+    <div class="modal-itens" id="modal-itens-lista"></div>
+    <div class="modal-total" id="modal-total-valor"></div>
+    <div class="modal-btns">
+      <button class="btn btn-secundario" onclick="fecharModal()">✖ Cancelar</button>
+      <button class="btn btn-vender" onclick="confirmarVenda()" style="font-size:0.95rem;padding:14px;">✅ Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODAL RESET ==================== -->
+<div class="modal-overlay" id="modal-reset">
+  <div class="modal">
+    <h2 style="color:var(--vermelho)">⚠️ Apagar Tudo?</h2>
+    <p style="font-size:0.85rem;color:var(--muted);text-align:center;margin-bottom:14px;">
+      Isso vai apagar <strong>TODAS</strong> as vendas, configurações e dados do caixa.<br>
+      Esta ação não pode ser desfeita!
+    </p>
+    <div class="config-section">
+      <label class="config-label">Digite APAGAR para confirmar</label>
+      <input type="text" id="input-confirmar-reset" placeholder="APAGAR" autocomplete="off">
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-secundario" onclick="fecharModalReset()">✖ Cancelar</button>
+      <button class="btn btn-perigo" onclick="executarReset()" id="btn-executar-reset" disabled>
+        🗑️ Apagar Tudo
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODAL ESTORNO ==================== -->
+<div class="modal-overlay" id="modal-estorno">
+  <div class="modal">
+    <h2 style="color:var(--vermelho)">↩️ Estornar Venda?</h2>
+    <p style="font-size:0.85rem;color:var(--muted);text-align:center;margin-bottom:10px;">
+      O estoque será devolvido automaticamente.
+    </p>
+    <div class="modal-itens" id="modal-estorno-itens"></div>
+    <div class="modal-total" id="modal-estorno-valor" style="color:var(--vermelho)"></div>
+    <div class="modal-btns">
+      <button class="btn btn-secundario" onclick="fecharModalEstorno()">✖ Cancelar</button>
+      <button class="btn btn-perigo" onclick="executarEstorno()" style="font-size:0.95rem;padding:14px;">↩️ Estornar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODAL FIREBASE CONFIG ==================== -->
+<div class="modal-overlay" id="modal-firebase">
+  <div class="modal">
+    <h2 style="color:var(--azul)">🔥 Configurar Firebase</h2>
+    <p style="font-size:0.82rem;color:var(--muted);text-align:center;margin-bottom:14px;">
+      Informe a URL do Realtime Database e o Database Secret.<br>
+      Esses dados ficam salvos apenas neste navegador.
+    </p>
+    <div class="config-section">
+      <label class="config-label">URL base do Firebase</label>
+      <input type="text" id="input-fb-base" placeholder="https://seu-projeto-default-rtdb.firebaseio.com" autocomplete="off">
+    </div>
+    <div class="config-section">
+      <label class="config-label">Database Secret</label>
+      <div style="position:relative;">
+        <input type="password" id="input-fb-secret" placeholder="Cole o secret do Firebase Console" autocomplete="off" style="padding-right:50px;">
+        <button type="button" onclick="toggleSecretVisibility()" id="btn-toggle-secret"
+          style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:1.2rem;cursor:pointer;padding:4px 8px;">
+          👁️
+        </button>
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-secundario" onclick="fecharModalFirebase()">✖ Cancelar</button>
+      <button class="btn btn-vender" onclick="salvarConfigFirebase()" style="font-size:0.95rem;padding:14px;">💾 Salvar</button>
+    </div>
+    <button class="btn btn-secundario" onclick="desconectarFirebase()" style="margin-top:10px;font-size:0.8rem;color:var(--vermelho);">
+      🔌 Desconectar Firebase
+    </button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+//  CONFIGURAÇÃO FIREBASE
+// ============================================================
+// Credenciais armazenadas em localStorage — NUNCA hardcoded no código.
+// Na primeira abertura, o admin informa URL base e database secret via modal.
+// O secret é necessário para escrita (PUT/DELETE); leitura pública usa outro path.
+function getFirebaseConfig() {
+  const base = localStorage.getItem('fb_base');
+  const secret = localStorage.getItem('fb_secret');
+  if (!base || !secret) return null;
+  return {
+    // Path privado — dados completos (vendas, caixa, estoque)
+    url: `${base}/barraca.json?auth=${secret}`,
+    // Path público — apenas produtos/estoque para o cardápio dos clientes
+    urlPublic: `${base}/barraca_public.json?auth=${secret}`,
+    base,
+    secret,
+  };
+}
+
+function isFirebaseConfigured() {
+  return getFirebaseConfig() !== null;
+}
+
+function limparFirebaseConfig() {
+  localStorage.removeItem('fb_base');
+  localStorage.removeItem('fb_secret');
+}
+
+function salvarFirebaseConfig(base, secret) {
+  // Remove trailing slash se houver
+  const baseNormalizada = base.replace(/\/+$/, '');
+  localStorage.setItem('fb_base', baseNormalizada);
+  localStorage.setItem('fb_secret', secret);
+}
+
+// ============================================================
+//  DADOS PADRÃO
+// ============================================================
+// Incrementar ao mudar cardápio, insumos ou estoque padrão
+const DATA_VERSION = 2;
+
+const PRODUTOS_PADRAO = [
+  // Caldos
+  { id:'caldo_frango',    emoji:'🍗', nome:'Caldo de Frango 300ml',           preco:20, insumo:'caldo_frango',    qtdPorVenda:1 },
+  { id:'caldo_calabresa', emoji:'🥩', nome:'Caldo Carne c/ Calabresa 300ml',  preco:20, insumo:'caldo_calabresa', qtdPorVenda:1 },
+  // Milho/derivados
+  { id:'milho_cozido',    emoji:'🌽', nome:'Milho Cozido',                    preco:3,  insumo:'milho_cozido',    qtdPorVenda:1 },
+  { id:'munguza',         emoji:'🟡', nome:'Mingau de Milho (Munguza) 250ml', preco:12, insumo:'munguza',         qtdPorVenda:1 },
+  { id:'canjica',         emoji:'🍚', nome:'Canjica 250ml',                   preco:15, insumo:'canjica',         qtdPorVenda:1 },
+  // Bebidas quentes
+  { id:'chocolate',       emoji:'🍫', nome:'Chocolate Quente 180ml',          preco:15, insumo:'chocolate',       qtdPorVenda:1 },
+  { id:'cafe',            emoji:'☕', nome:'Café 180ml',                      preco:3,  insumo:'cafe',            qtdPorVenda:1 },
+];
+
+const INSUMOS_PADRAO = [
+  // Caldos
+  { id:'caldo_frango',    emoji:'🍗', nome:'Caldo de Frango',           unidade:'porção',  custo_unit:5.00 },
+  { id:'caldo_calabresa', emoji:'🥩', nome:'Caldo Carne c/ Calabresa',  unidade:'porção',  custo_unit:5.00 },
+  // Milho/derivados
+  { id:'milho_cozido',    emoji:'🌽', nome:'Milho Cozido',              unidade:'unidade', custo_unit:0.50 },
+  { id:'munguza',         emoji:'🟡', nome:'Mingau de Milho (Munguza)', unidade:'porção',  custo_unit:3.00 },
+  { id:'canjica',         emoji:'🍚', nome:'Canjica',                   unidade:'porção',  custo_unit:3.00 },
+  // Bebidas quentes
+  { id:'chocolate',       emoji:'🍫', nome:'Chocolate Quente',          unidade:'xícara',  custo_unit:3.00 },
+  { id:'cafe',            emoji:'☕', nome:'Café',                      unidade:'xícara',  custo_unit:0.50 },
+];
+
+const ESTOQUE_INICIAL_PADRAO = {
+  1: {
+    caldo_frango:20, caldo_calabresa:20,
+    milho_cozido:30,
+    munguza:20, canjica:20,
+    chocolate:20, cafe:40
+  },
+  2: {
+    caldo_frango:20, caldo_calabresa:20,
+    milho_cozido:30,
+    munguza:20, canjica:20,
+    chocolate:20, cafe:40
+  },
+};
+
+// ============================================================
+//  STATE
+// ============================================================
+let estado = {
+  diaAtual: 1,
+  carrinho: {},
+};
+
+function carregarDados() {
+  // Estrutura padrão para dados novos ou corrompidos
+  const dadosPadrao = {
+    versao: DATA_VERSION,
+    produtos: PRODUTOS_PADRAO,
+    insumos: INSUMOS_PADRAO,
+    estoque_inicial: JSON.parse(JSON.stringify(ESTOQUE_INICIAL_PADRAO)),
+    vendas: [],
+    caixa: { 1: null, 2: null }, // controle de caixa por dia
+    carrinho: {}, // carrinho persistente
+  };
+
+  try {
+    const raw = localStorage.getItem('festaJunina');
+    if (!raw) return dadosPadrao;
+
+    const dados = JSON.parse(raw);
+
+    // Garantir que campos novos existam (migração de dados antigos)
+    if (!dados.caixa) dados.caixa = { 1: null, 2: null };
+    if (!dados.carrinho) dados.carrinho = {};
+
+    // Migração de versão: atualiza cardápio mantendo vendas/caixa
+    if (dados.versao !== DATA_VERSION) {
+      dados.produtos = PRODUTOS_PADRAO;
+      dados.insumos = INSUMOS_PADRAO;
+      dados.estoque_inicial = JSON.parse(JSON.stringify(ESTOQUE_INICIAL_PADRAO));
+      dados.versao = DATA_VERSION;
+      dados.carrinho = {};
+      // Persiste a migração imediatamente
+      localStorage.setItem('festaJunina', JSON.stringify(dados));
+    }
+
+    return dados;
+  } catch (err) {
+    console.error('Dados corrompidos no localStorage:', err);
+    toast('⚠️ Dados corrompidos detectados. Usando padrão.', 'erro');
+    return dadosPadrao;
+  }
+}
+
+function salvarDados(d) {
+  // Salva localmente (instantâneo, funciona offline)
+  localStorage.setItem('festaJunina', JSON.stringify(d));
+  // Sincroniza com Firebase em background (fire-and-forget)
+  enviarParaFirebase(d);
+}
+
+// Envia dados para Firebase. Não bloqueia a UI.
+// Faz PUT duplo: dados completos em /barraca (privado) e dados
+// sanitizados em /barraca_public (leitura pública para o cardápio).
+function enviarParaFirebase(d) {
+  const fb = getFirebaseConfig();
+  if (!fb) return;
+
+  // Dados completos → /barraca (privado, requer database secret)
+  fetch(fb.url, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(d),
+  }).catch(err => {
+    console.warn('Firebase offline, dados salvos só localmente:', err.message);
+  });
+
+  // Dados públicos → /barraca_public (leitura liberada, sem dados financeiros)
+  // Inclui apenas o mínimo para o cardápio calcular estoque disponível:
+  // produtos, insumos, estoque_inicial e vendas resumidas (sem totais/horários)
+  const dadosPublicos = {
+    produtos: d.produtos,
+    insumos: d.insumos,
+    estoque_inicial: d.estoque_inicial,
+    vendas: (d.vendas || []).map(v => ({
+      dia: v.dia,
+      itens: v.itens,
+      estornada: v.estornada,
+    })),
+  };
+  fetch(fb.urlPublic, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(dadosPublicos),
+  }).catch(err => {
+    console.warn('Firebase public path offline:', err.message);
+  });
+}
+
+// Puxa dados do Firebase e atualiza localStorage.
+// Chamada no init e periodicamente para manter sincronizado.
+// Usa o path privado /barraca (com auth) pois o admin precisa de todos os dados.
+function sincronizarFirebase() {
+  const fb = getFirebaseConfig();
+  if (!fb) return;
+
+  fetch(fb.url)
+    .then(resp => {
+      if (!resp.ok) throw new Error('Firebase respondeu ' + resp.status);
+      return resp.json();
+    })
+    .then(dados => {
+      if (dados && dados.produtos && dados.vendas) {
+        // Firebase tem dados válidos — atualiza localStorage
+        localStorage.setItem('festaJunina', JSON.stringify(dados));
+        // Re-render da tela ativa para refletir mudanças externas
+        const telaAtiva = document.querySelector('.tela.ativa');
+        if (telaAtiva) {
+          const id = telaAtiva.id.replace('tela-', '');
+          if (id === 'pdv') renderPDV();
+          else if (id === 'caixa') renderCaixa();
+          else if (id === 'dashboard') renderDashboard();
+          else if (id === 'estoque') renderEstoque();
+          else if (id === 'historico') renderHistorico();
+          else if (id === 'relatorio') renderRelatorio();
+        }
+      }
+    })
+    .catch(err => {
+      console.warn('Sync Firebase falhou (usando dados locais):', err.message);
+    });
+}
+
+// ============================================================
+//  NAVEGAÇÃO
+// ============================================================
+function ir(tela) {
+  document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tela-' + tela).classList.add('ativa');
+  document.getElementById('nav-' + tela).classList.add('active');
+
+  if (tela === 'caixa') renderCaixa();
+  if (tela === 'dashboard') renderDashboard();
+  if (tela === 'estoque') renderEstoque();
+  if (tela === 'historico') renderHistorico();
+  if (tela === 'relatorio') renderRelatorio();
+  if (tela === 'config') renderConfig();
+}
+
+// ============================================================
+//  SELETOR DE DIA
+// ============================================================
+function selecionarDia(dia) {
+  estado.diaAtual = dia;
+  // Atualiza todos os seletores de dia
+  [['btn-dia','pdv'],['cx-dia','caixa'],['db-dia','dashboard'],['est-dia','estoque'],['hist-dia','historico']].forEach(([prefix, tela]) => {
+    [1,2].forEach(d => {
+      const el = document.getElementById(prefix + d);
+      if (el) el.classList.toggle('selecionado', d === dia);
+    });
+  });
+  // dashboard e histórico tem opção "total"
+  const dbTotal = document.getElementById('db-total');
+  if (dbTotal) dbTotal.classList.toggle('selecionado', dia === 0);
+  const histTotal = document.getElementById('hist-total');
+  if (histTotal) histTotal.classList.toggle('selecionado', dia === 0);
+
+  const badge = document.getElementById('header-dia');
+  if (dia === 0) badge.textContent = '🏆 Resultado Total';
+  else badge.textContent = `📅 Operando no Dia ${dia}`;
+
+  // Re-render da tela ativa
+  const telaAtiva = document.querySelector('.tela.ativa');
+  if (!telaAtiva) return;
+  const id = telaAtiva.id;
+  if (id === 'tela-pdv') renderPDV();
+  if (id === 'tela-caixa') renderCaixa();
+  if (id === 'tela-dashboard') renderDashboard();
+  if (id === 'tela-estoque') renderEstoque();
+  if (id === 'tela-historico') renderHistorico();
+}
+
+// ============================================================
+//  PDV
+// ============================================================
+function renderPDV() {
+  const dados = carregarDados();
+  const grid = document.getElementById('pdv-grid');
+  const estoqueDisp = calcularEstoqueDisponivel(dados, estado.diaAtual);
+
+  grid.innerHTML = dados.produtos.map(p => {
+    const estDisp = estoqueDisp[p.insumo] || 0;
+    const semEstoque = estDisp < p.qtdPorVenda;
+    return `
+      <div class="pdv-item ${semEstoque ? 'sem-estoque' : ''}" onclick="${semEstoque ? '' : `adicionarAoCarrinho('${p.id}')`}">
+        <span class="estoque-mini">${semEstoque ? '❌' : estDisp + ' disp.'}</span>
+        <span class="emoji">${p.emoji}</span>
+        <div class="nome">${p.nome}</div>
+        <div class="preco">R$ ${p.preco.toFixed(2).replace('.',',')}</div>
+      </div>`;
+  }).join('');
+
+  renderCarrinho(dados);
+}
+
+function calcularEstoqueDisponivel(dados, dia) {
+  if (!dia || dia === 0) return {};
+  const inicial = dados.estoque_inicial[dia] || {};
+  // Ignora vendas estornadas no cálculo de estoque
+  const vendas = dados.vendas.filter(v => v.dia === dia && !v.estornada);
+  const resultado = { ...inicial };
+
+  vendas.forEach(venda => {
+    venda.itens.forEach(item => {
+      const prod = dados.produtos.find(p => p.id === item.id);
+      if (prod) {
+        resultado[prod.insumo] = (resultado[prod.insumo] || 0) - (prod.qtdPorVenda * item.qtd);
+      }
+    });
+  });
+
+  // Também subtrai o carrinho atual
+  Object.entries(estado.carrinho).forEach(([pid, qtd]) => {
+    const prod = dados.produtos.find(p => p.id === pid);
+    if (prod) resultado[prod.insumo] = (resultado[prod.insumo] || 0) - (prod.qtdPorVenda * qtd);
+  });
+
+  return resultado;
+}
+
+function salvarCarrinho() {
+  // Persiste o carrinho no localStorage
+  const dados = carregarDados();
+  dados.carrinho = estado.carrinho;
+  salvarDados(dados);
+}
+
+function adicionarAoCarrinho(pid) {
+  estado.carrinho[pid] = (estado.carrinho[pid] || 0) + 1;
+  const dados = carregarDados();
+  // Verificar estoque
+  const estDisp = calcularEstoqueDisponivel(dados, estado.diaAtual);
+  const prod = dados.produtos.find(p => p.id === pid);
+  if (prod && estDisp[prod.insumo] < 0) {
+    estado.carrinho[pid]--;
+    toast('Estoque insuficiente!', 'erro');
+    return;
+  }
+  salvarCarrinho();
+  renderCarrinho(dados);
+  renderPDV();
+}
+
+function alterarQtdCarrinho(pid, delta) {
+  estado.carrinho[pid] = (estado.carrinho[pid] || 0) + delta;
+  if (estado.carrinho[pid] <= 0) delete estado.carrinho[pid];
+  salvarCarrinho();
+  const dados = carregarDados();
+  renderCarrinho(dados);
+  renderPDV();
+}
+
+function renderCarrinho(dados) {
+  const container = document.getElementById('carrinho-itens');
+  const totalEl = document.getElementById('carrinho-total');
+  const totalValor = document.getElementById('total-valor');
+  const btnFinalizar = document.getElementById('btn-finalizar');
+
+  const ids = Object.keys(estado.carrinho);
+  if (ids.length === 0) {
+    container.innerHTML = '<div class="carrinho-vazio">Toque em um produto para adicionar</div>';
+    totalEl.style.display = 'none';
+    btnFinalizar.disabled = true;
+    return;
+  }
+
+  let total = 0;
+  container.innerHTML = ids.map(pid => {
+    const prod = dados.produtos.find(p => p.id === pid);
+    if (!prod) return '';
+    const qtd = estado.carrinho[pid];
+    const sub = prod.preco * qtd;
+    total += sub;
+    return `
+      <div class="carrinho-item">
+        <span class="ci-nome">${prod.emoji} ${prod.nome}</span>
+        <div class="ci-qtd">
+          <button class="btn-qtd btn-menos" onclick="alterarQtdCarrinho('${pid}',-1)">−</button>
+          <span class="qtd-num">${qtd}</span>
+          <button class="btn-qtd btn-mais" onclick="alterarQtdCarrinho('${pid}',1)">+</button>
+        </div>
+        <span class="ci-subtotal">R$ ${sub.toFixed(2).replace('.',',')}</span>
+      </div>`;
+  }).join('');
+
+  totalEl.style.display = 'flex';
+  totalValor.textContent = 'R$ ' + total.toFixed(2).replace('.',',');
+  btnFinalizar.disabled = false;
+}
+
+// ============================================================
+//  MODAL DE VENDA
+// ============================================================
+function abrirModal() {
+  if (Object.keys(estado.carrinho).length === 0) return;
+  const dados = carregarDados();
+  let total = 0;
+  let html = '';
+  Object.entries(estado.carrinho).forEach(([pid, qtd]) => {
+    const prod = dados.produtos.find(p => p.id === pid);
+    if (!prod) return;
+    const sub = prod.preco * qtd;
+    total += sub;
+    html += `<div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>${prod.emoji} ${prod.nome} × ${qtd}</span><strong>R$ ${sub.toFixed(2).replace('.',',')}</strong></div>`;
+  });
+  document.getElementById('modal-itens-lista').innerHTML = html;
+  document.getElementById('modal-total-valor').textContent = 'R$ ' + total.toFixed(2).replace('.',',');
+  document.getElementById('modal-venda').classList.add('aberto');
+}
+
+function fecharModal() {
+  document.getElementById('modal-venda').classList.remove('aberto');
+}
+
+function confirmarVenda() {
+  const dados = carregarDados();
+  const itens = Object.entries(estado.carrinho).map(([id, qtd]) => ({ id, qtd }));
+  let total = 0;
+  itens.forEach(item => {
+    const prod = dados.produtos.find(p => p.id === item.id);
+    if (prod) total += prod.preco * item.qtd;
+  });
+
+  dados.vendas.push({
+    id: Date.now(),
+    dia: estado.diaAtual,
+    hora: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+    itens,
+    total,
+  });
+
+  // Limpar carrinho e salvar
+  dados.carrinho = {};
+  salvarDados(dados);
+  estado.carrinho = {};
+
+  fecharModal();
+  renderPDV();
+  toast(`✅ Venda de R$ ${total.toFixed(2).replace('.',',')} registrada!`, 'sucesso');
+}
+
+// ============================================================
+//  DASHBOARD
+// ============================================================
+function renderDashboard() {
+  const dados = carregarDados();
+  const dia = estado.diaAtual;
+  // Ignora vendas estornadas
+  const todasVendasAtivas = dados.vendas.filter(v => !v.estornada);
+  const vendasFiltro = dia === 0 ? todasVendasAtivas : todasVendasAtivas.filter(v => v.dia === dia);
+  const totalVendas = vendasFiltro.reduce((a, v) => a + v.total, 0);
+  const numVendas = vendasFiltro.length;
+
+  // Produto mais vendido
+  const contagem = {};
+  vendasFiltro.forEach(v => v.itens.forEach(item => {
+    contagem[item.id] = (contagem[item.id] || 0) + item.qtd;
+  }));
+  const topId = Object.entries(contagem).sort((a,b) => b[1]-a[1])[0];
+  const topProd = topId ? dados.produtos.find(p => p.id === topId[0]) : null;
+
+  // Custo estimado
+  let custoTotal = 0;
+  vendasFiltro.forEach(v => v.itens.forEach(item => {
+    const prod = dados.produtos.find(p => p.id === item.id);
+    const insumo = dados.insumos.find(i => i.id === prod?.insumo);
+    if (prod && insumo) custoTotal += insumo.custo_unit * prod.qtdPorVenda * item.qtd;
+  }));
+  const lucro = totalVendas - custoTotal;
+
+  const tituloDb = dia === 0 ? 'Total dos 2 Dias' : `Dia ${dia}`;
+
+  document.getElementById('dashboard-content').innerHTML = `
+    <div class="stats-grid">
+      <div class="stat-card destaque">
+        <span class="stat-valor">R$ ${totalVendas.toFixed(2).replace('.',',')}</span>
+        <div class="stat-label">💰 Total em Caixa — ${tituloDb}</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-valor">${numVendas}</span>
+        <div class="stat-label">🧾 Vendas</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-valor">R$ ${numVendas > 0 ? (totalVendas/numVendas).toFixed(2).replace('.',',') : '0,00'}</span>
+        <div class="stat-label">📈 Ticket Médio</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-titulo">🏆 Mais Vendido</div>
+      ${topProd ? `<div style="text-align:center;font-size:2.5rem;">${topProd.emoji}</div>
+      <div style="text-align:center;font-weight:800;font-size:1rem;">${topProd.nome}</div>
+      <div style="text-align:center;color:var(--muted);font-size:0.85rem;">${topId[1]} unidades vendidas</div>`
+      : '<div class="sem-dados">Nenhuma venda ainda</div>'}
+    </div>
+    <div class="card">
+      <div class="card-titulo">💡 Estimativa de Resultado</div>
+      <div class="rel-linha"><span>Total vendido</span><span style="color:var(--verde);font-weight:700;">R$ ${totalVendas.toFixed(2).replace('.',',')}</span></div>
+      <div class="rel-linha custo"><span>Custo estimado</span><span>− R$ ${custoTotal.toFixed(2).replace('.',',')}</span></div>
+      <div class="rel-linha total"><span>Lucro estimado</span><span>R$ ${lucro.toFixed(2).replace('.',',')}</span></div>
+    </div>`;
+}
+
+// ============================================================
+//  ESTOQUE
+// ============================================================
+function renderEstoque() {
+  const dados = carregarDados();
+  const dia = estado.diaAtual;
+  const inicial = dados.estoque_inicial[dia] || {};
+  const disponivel = calcularEstoqueDisponivel(dados, dia);
+  // Remover efeito do carrinho do cálculo (já não existe)
+  const dispSemCarrinho = {};
+  dados.insumos.forEach(ins => {
+    const ini = inicial[ins.id] || 0;
+    const usado = (ini) - (disponivel[ins.id] !== undefined ? disponivel[ins.id] : ini);
+    dispSemCarrinho[ins.id] = ini - usado;
+  });
+
+  const lista = document.getElementById('estoque-lista');
+  lista.innerHTML = dados.insumos.map(ins => {
+    const ini = inicial[ins.id] || 0;
+    const disp = Math.max(0, dispSemCarrinho[ins.id] || 0);
+    const pct = ini > 0 ? (disp / ini) * 100 : 0;
+    const cor = pct > 50 ? '#27AE60' : pct > 20 ? '#F39C12' : '#C0392B';
+    const alerta = pct < 20 && ini > 0;
+    return `
+      <div class="estoque-item">
+        <span class="estoque-emoji">${ins.emoji}</span>
+        <div class="estoque-info">
+          <div class="estoque-nome">${ins.nome}${alerta ? '<span class="alerta-badge">BAIXO</span>' : ''}</div>
+          <div class="estoque-detalhe">${Math.round(ini - disp)} usados de ${ini} ${ins.unidade}s</div>
+          <div class="estoque-barra-wrap">
+            <div class="estoque-barra" style="width:${pct}%;background:${cor}"></div>
+          </div>
+        </div>
+        <div class="estoque-valor" style="color:${cor}">${disp}<br><small style="color:var(--muted);font-size:0.65rem">${ins.unidade}s</small></div>
+      </div>`;
+  }).join('');
+}
+
+// ============================================================
+//  HISTÓRICO
+// ============================================================
+function renderHistorico() {
+  const dados = carregarDados();
+  const dia = estado.diaAtual;
+
+  // Filtrar por dia (0 = todos)
+  const vendas = (dia === 0
+    ? dados.vendas
+    : dados.vendas.filter(v => v.dia === dia)
+  ).slice().reverse();
+
+  const container = document.getElementById('historico-lista');
+
+  if (vendas.length === 0) {
+    container.innerHTML = '<div class="sem-dados"><span class="emoji-big">🧾</span>Nenhuma venda registrada</div>';
+    return;
+  }
+
+  const vendasAtivas = vendas.filter(v => !v.estornada).length;
+  const vendasEstornadas = vendas.filter(v => v.estornada).length;
+
+  container.innerHTML = `
+    <div style="font-size:0.8rem;color:var(--muted);margin-bottom:10px;text-align:right;">
+      ${vendasAtivas} venda(s)${vendasEstornadas > 0 ? ` · ${vendasEstornadas} estornada(s)` : ''} — mais recente primeiro
+    </div>` +
+    vendas.map(v => {
+      const itensStr = v.itens.map(i => {
+        const prod = dados.produtos.find(p => p.id === i.id);
+        return prod ? `${prod.emoji}×${i.qtd}` : '';
+      }).join(' ');
+
+      const estornada = v.estornada;
+      const estiloEstornado = estornada
+        ? 'opacity:0.5;text-decoration:line-through;background:#FEE;'
+        : '';
+
+      return `
+        <div class="venda-item" style="${estiloEstornado}">
+          ${dia === 0 ? `<span class="tag-dia tag-dia${v.dia}">D${v.dia}</span>` : ''}
+          <span class="venda-hora">⏱ ${v.hora}</span>
+          <span class="venda-itens">${itensStr}</span>
+          <span class="venda-valor" style="${estornada ? 'color:var(--muted)' : ''}">
+            R$ ${v.total.toFixed(2).replace('.',',')}
+          </span>
+          ${!estornada ? `
+            <button class="btn-estorno" onclick="confirmarEstorno(${v.id})" title="Estornar">
+              🗑️
+            </button>
+          ` : `<span style="font-size:0.7rem;color:var(--vermelho);margin-left:6px;">ESTORNADO</span>`}
+        </div>`;
+    }).join('');
+}
+
+function confirmarEstorno(vendaId) {
+  const dados = carregarDados();
+  const venda = dados.vendas.find(v => v.id === vendaId);
+  if (!venda) return;
+
+  const itensStr = venda.itens.map(i => {
+    const prod = dados.produtos.find(p => p.id === i.id);
+    return prod ? `${prod.emoji} ${prod.nome} × ${i.qtd}` : '';
+  }).join('<br>');
+
+  document.getElementById('modal-estorno-itens').innerHTML = itensStr;
+  document.getElementById('modal-estorno-valor').textContent = `R$ ${venda.total.toFixed(2).replace('.',',')}`;
+  document.getElementById('modal-estorno').dataset.vendaId = vendaId;
+  document.getElementById('modal-estorno').classList.add('aberto');
+}
+
+function fecharModalEstorno() {
+  document.getElementById('modal-estorno').classList.remove('aberto');
+}
+
+function executarEstorno() {
+  const vendaId = parseInt(document.getElementById('modal-estorno').dataset.vendaId);
+  const dados = carregarDados();
+  const venda = dados.vendas.find(v => v.id === vendaId);
+
+  if (!venda) {
+    toast('❌ Venda não encontrada', 'erro');
+    return;
+  }
+
+  // Marcar como estornada
+  venda.estornada = true;
+  venda.estorno = {
+    hora: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+    data: new Date().toISOString()
+  };
+
+  salvarDados(dados);
+  fecharModalEstorno();
+  renderHistorico();
+  renderPDV(); // Atualiza estoque disponível
+
+  toast(`↩️ Venda de R$ ${venda.total.toFixed(2).replace('.',',')} estornada!`, 'sucesso');
+}
+
+// ============================================================
+//  RELATÓRIO FINAL
+// ============================================================
+function renderRelatorio() {
+  const dados = carregarDados();
+
+  let html = '';
+
+  [1, 2].forEach(dia => {
+    // Ignora vendas estornadas
+    const vendas = dados.vendas.filter(v => v.dia === dia && !v.estornada);
+    const totalDia = vendas.reduce((a, v) => a + v.total, 0);
+    let custoDia = 0;
+    vendas.forEach(v => v.itens.forEach(item => {
+      const prod = dados.produtos.find(p => p.id === item.id);
+      const insumo = dados.insumos.find(i => i.id === prod?.insumo);
+      if (prod && insumo) custoDia += insumo.custo_unit * prod.qtdPorVenda * item.qtd;
+    }));
+
+    // Contagem por produto
+    const contagem = {};
+    vendas.forEach(v => v.itens.forEach(item => {
+      contagem[item.id] = (contagem[item.id] || 0) + item.qtd;
+    }));
+    const ranking = Object.entries(contagem).sort((a,b) => b[1]-a[1]).slice(0,5);
+
+    html += `
+      <div class="rel-section">
+        <div class="rel-titulo">📅 Dia ${dia} — Resumo</div>
+        <div class="rel-linha"><span>Vendas realizadas</span><span>${vendas.length}</span></div>
+        <div class="rel-linha"><span>Receita total</span><span style="color:var(--verde);font-weight:700;">R$ ${totalDia.toFixed(2).replace('.',',')}</span></div>
+        <div class="rel-linha custo"><span>Custo estimado</span><span>− R$ ${custoDia.toFixed(2).replace('.',',')}</span></div>
+        <div class="rel-linha total"><span>Lucro estimado</span><span>R$ ${(totalDia-custoDia).toFixed(2).replace('.',',')}</span></div>
+        ${ranking.length > 0 ? `
+        <hr class="festivo" style="margin:10px 0">
+        <div style="font-size:0.78rem;color:var(--muted);font-weight:700;margin-bottom:8px;">MAIS VENDIDOS</div>
+        ${ranking.map(([pid, qtd]) => {
+          const prod = dados.produtos.find(p => p.id === pid);
+          return prod ? `<div class="rel-linha"><span>${prod.emoji} ${prod.nome}</span><span>${qtd} un.</span></div>` : '';
+        }).join('')}` : ''}
+      </div>`;
+  });
+
+  // TOTAL GERAL (ignora estornadas)
+  const todasVendas = dados.vendas.filter(v => !v.estornada);
+  const totalGeral = todasVendas.reduce((a, v) => a + v.total, 0);
+  let custoGeral = 0;
+  todasVendas.forEach(v => v.itens.forEach(item => {
+    const prod = dados.produtos.find(p => p.id === item.id);
+    const insumo = dados.insumos.find(i => i.id === prod?.insumo);
+    if (prod && insumo) custoGeral += insumo.custo_unit * prod.qtdPorVenda * item.qtd;
+  }));
+
+  html += `
+    <div class="rel-section" style="background:linear-gradient(135deg,#E8F8EF,#D5F5E3);border-color:#A9DFBF;">
+      <div class="rel-titulo" style="color:var(--verde)">🏆 RESULTADO GERAL DA FESTA</div>
+      <div class="rel-linha"><span>Total de vendas</span><span>${todasVendas.length}</span></div>
+      <div class="rel-linha total" style="font-size:1.1rem;"><span>Receita total</span><span>R$ ${totalGeral.toFixed(2).replace('.',',')}</span></div>
+      <div class="rel-linha custo"><span>Custo estimado</span><span>− R$ ${custoGeral.toFixed(2).replace('.',',')}</span></div>
+      <div class="rel-linha total" style="font-size:1.2rem;"><span>💰 Lucro estimado</span><span>R$ ${(totalGeral-custoGeral).toFixed(2).replace('.',',')}</span></div>
+      <div style="margin-top:12px;text-align:center;font-size:0.8rem;color:var(--muted);">* Custo baseado nos valores configurados por insumo</div>
+    </div>`;
+
+  document.getElementById('relatorio-content').innerHTML = html;
+}
+
+// ============================================================
+//  CONTROLE DE CAIXA
+// ============================================================
+function renderCaixa() {
+  const dados = carregarDados();
+  const dia = estado.diaAtual;
+  if (dia === 0) {
+    document.getElementById('caixa-content').innerHTML =
+      '<div class="sem-dados"><span class="emoji-big">💵</span>Selecione um dia para gerenciar o caixa</div>';
+    return;
+  }
+
+  const caixaDia = dados.caixa[dia];
+  const vendasDia = dados.vendas.filter(v => v.dia === dia && !v.estornada);
+  const totalVendas = vendasDia.reduce((a, v) => a + v.total, 0);
+
+  let html = '';
+
+  if (!caixaDia || !caixaDia.abertura) {
+    // Caixa não aberto
+    html = `
+      <div class="card">
+        <div class="card-titulo">💵 Abrir Caixa — Dia ${dia}</div>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:14px;">
+          Informe o valor em dinheiro disponível para troco no início do dia.
+        </p>
+        <div class="config-section">
+          <label class="config-label">Valor inicial (troco) R$</label>
+          <input type="number" id="input-abertura" min="0" step="10" value="100" placeholder="100.00">
+        </div>
+        <button class="btn btn-vender" onclick="abrirCaixa()">
+          🔓 Abrir Caixa
+        </button>
+      </div>`;
+  } else {
+    // Caixa aberto
+    const sangrias = caixaDia.sangrias || [];
+    const totalSangrias = sangrias.reduce((a, s) => a + s.valor, 0);
+    const valorEsperado = caixaDia.abertura.valor + totalVendas - totalSangrias;
+
+    html = `
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-valor">R$ ${caixaDia.abertura.valor.toFixed(2).replace('.',',')}</span>
+          <div class="stat-label">🔓 Abertura</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-valor" style="color:var(--verde)">R$ ${totalVendas.toFixed(2).replace('.',',')}</span>
+          <div class="stat-label">📈 Vendas</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-valor" style="color:var(--vermelho)">R$ ${totalSangrias.toFixed(2).replace('.',',')}</span>
+          <div class="stat-label">📤 Sangrias</div>
+        </div>
+        <div class="stat-card destaque">
+          <span class="stat-valor">R$ ${valorEsperado.toFixed(2).replace('.',',')}</span>
+          <div class="stat-label">💰 Valor Esperado no Caixa</div>
+        </div>
+      </div>`;
+
+    // Sangrias
+    html += `
+      <div class="card">
+        <div class="card-titulo">📤 Registrar Sangria</div>
+        <p style="font-size:0.82rem;color:var(--muted);margin-bottom:10px;">
+          Sangria = retirar dinheiro do caixa (depósito, pagamento, etc.)
+        </p>
+        <div style="display:flex;gap:10px;align-items:flex-end;">
+          <div style="flex:1;">
+            <label class="config-label">Valor R$</label>
+            <input type="number" id="input-sangria-valor" min="1" step="10" placeholder="50">
+          </div>
+          <div style="flex:1;">
+            <label class="config-label">Motivo</label>
+            <input type="text" id="input-sangria-motivo" placeholder="Ex: Depósito">
+          </div>
+          <button class="btn btn-secundario" onclick="registrarSangria()" style="padding:12px 16px;">
+            ➕
+          </button>
+        </div>
+      </div>`;
+
+    // Lista de sangrias
+    if (sangrias.length > 0) {
+      html += `
+        <div class="card">
+          <div class="card-titulo">📋 Sangrias do Dia</div>
+          ${sangrias.map((s, idx) => `
+            <div class="venda-item">
+              <span class="venda-hora">⏱ ${s.hora}</span>
+              <span class="venda-itens">${s.motivo || 'Sem motivo'}</span>
+              <span class="venda-valor" style="color:var(--vermelho)">− R$ ${s.valor.toFixed(2).replace('.',',')}</span>
+            </div>
+          `).join('')}
+        </div>`;
+    }
+
+    // Fechamento
+    if (!caixaDia.fechamento) {
+      html += `
+        <div class="card">
+          <div class="card-titulo">🔐 Fechar Caixa</div>
+          <p style="font-size:0.82rem;color:var(--muted);margin-bottom:10px;">
+            Conte o dinheiro no caixa e informe o valor real.
+          </p>
+          <div class="config-section">
+            <label class="config-label">Valor contado R$</label>
+            <input type="number" id="input-fechamento" min="0" step="1" placeholder="${valorEsperado.toFixed(2)}">
+          </div>
+          <button class="btn btn-perigo" onclick="fecharCaixa()">
+            🔐 Fechar Caixa
+          </button>
+        </div>`;
+    } else {
+      // Caixa fechado
+      const f = caixaDia.fechamento;
+      const corDif = f.diferenca >= 0 ? 'var(--verde)' : 'var(--vermelho)';
+      html += `
+        <div class="card" style="background:linear-gradient(135deg,#F8F8F8,#EFEFEF);">
+          <div class="card-titulo">🔐 Caixa Fechado</div>
+          <div class="rel-linha"><span>Valor esperado</span><span>R$ ${f.valorEsperado.toFixed(2).replace('.',',')}</span></div>
+          <div class="rel-linha"><span>Valor contado</span><span>R$ ${f.valorContado.toFixed(2).replace('.',',')}</span></div>
+          <div class="rel-linha" style="font-weight:800;color:${corDif}">
+            <span>Diferença</span>
+            <span>${f.diferenca >= 0 ? '+' : ''}R$ ${f.diferenca.toFixed(2).replace('.',',')}</span>
+          </div>
+          <div style="text-align:center;font-size:0.75rem;color:var(--muted);margin-top:8px;">
+            Fechado às ${f.hora}
+          </div>
+        </div>`;
+    }
+  }
+
+  document.getElementById('caixa-content').innerHTML = html;
+}
+
+function abrirCaixa() {
+  const valor = parseFloat(document.getElementById('input-abertura').value) || 0;
+  const dados = carregarDados();
+  const dia = estado.diaAtual;
+
+  if (!dados.caixa[dia]) dados.caixa[dia] = {};
+  dados.caixa[dia].abertura = {
+    valor: valor,
+    hora: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  };
+  dados.caixa[dia].sangrias = [];
+  dados.caixa[dia].fechamento = null;
+
+  salvarDados(dados);
+  renderCaixa();
+  toast(`🔓 Caixa aberto com R$ ${valor.toFixed(2).replace('.',',')}`, 'sucesso');
+}
+
+function registrarSangria() {
+  const valor = parseFloat(document.getElementById('input-sangria-valor').value) || 0;
+  const motivo = document.getElementById('input-sangria-motivo').value.trim();
+
+  if (valor <= 0) {
+    toast('❌ Informe um valor válido', 'erro');
+    return;
+  }
+
+  const dados = carregarDados();
+  const dia = estado.diaAtual;
+
+  if (!dados.caixa[dia].sangrias) dados.caixa[dia].sangrias = [];
+  dados.caixa[dia].sangrias.push({
+    valor: valor,
+    motivo: motivo || 'Sangria',
+    hora: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  });
+
+  salvarDados(dados);
+  renderCaixa();
+  toast(`📤 Sangria de R$ ${valor.toFixed(2).replace('.',',')} registrada`, 'sucesso');
+}
+
+function fecharCaixa() {
+  const valorContado = parseFloat(document.getElementById('input-fechamento').value);
+  if (isNaN(valorContado) || valorContado < 0) {
+    toast('❌ Informe o valor contado', 'erro');
+    return;
+  }
+
+  const dados = carregarDados();
+  const dia = estado.diaAtual;
+  const caixaDia = dados.caixa[dia];
+
+  const vendasDia = dados.vendas.filter(v => v.dia === dia && !v.estornada);
+  const totalVendas = vendasDia.reduce((a, v) => a + v.total, 0);
+  const totalSangrias = (caixaDia.sangrias || []).reduce((a, s) => a + s.valor, 0);
+  const valorEsperado = caixaDia.abertura.valor + totalVendas - totalSangrias;
+
+  caixaDia.fechamento = {
+    valorEsperado: valorEsperado,
+    valorContado: valorContado,
+    diferenca: valorContado - valorEsperado,
+    hora: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  };
+
+  salvarDados(dados);
+  renderCaixa();
+
+  const dif = caixaDia.fechamento.diferenca;
+  if (dif === 0) {
+    toast('🎉 Caixa fechado! Bateu certinho!', 'sucesso');
+  } else if (dif > 0) {
+    toast(`🔐 Caixa fechado. Sobrou R$ ${dif.toFixed(2).replace('.',',')}`, 'sucesso');
+  } else {
+    toast(`🔐 Caixa fechado. Faltou R$ ${Math.abs(dif).toFixed(2).replace('.',',')}`, 'erro');
+  }
+}
+
+// ============================================================
+//  CONFIGURAÇÃO
+// ============================================================
+function renderConfig() {
+  const dados = carregarDados();
+
+  // Produtos
+  document.getElementById('config-produtos').innerHTML = dados.produtos.map(p => `
+    <div class="produto-config-item">
+      <div class="pci-header">
+        <span class="pci-emoji">${p.emoji}</span>
+        <span class="pci-nome">${p.nome}</span>
+      </div>
+      <div class="pci-fields">
+        <div class="pci-field">
+          <label>Preço de venda (R$)</label>
+          <input type="number" min="0" step="0.5" value="${p.preco}"
+            onchange="atualizarPreco('${p.id}', this.value)">
+        </div>
+      </div>
+    </div>`).join('');
+
+  // Estoque
+  let htmlEst = '';
+  [1, 2].forEach(dia => {
+    htmlEst += `<div style="font-weight:800;color:var(--azul);margin:14px 0 8px;font-family:'Fredoka One',cursive;">📅 Dia ${dia}</div>`;
+    dados.insumos.forEach(ins => {
+      const val = dados.estoque_inicial[dia]?.[ins.id] || 0;
+      htmlEst += `
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <span style="font-size:1.4rem;">${ins.emoji}</span>
+          <span style="flex:1;font-size:0.88rem;font-weight:600;">${ins.nome}</span>
+          <input type="number" min="0" style="width:80px;" value="${val}"
+            onchange="atualizarEstoqueInicial(${dia},'${ins.id}',this.value)">
+        </div>`;
+    });
+  });
+
+  // Custo por insumo
+  htmlEst += `<div style="font-weight:800;color:var(--azul);margin:14px 0 8px;font-family:'Fredoka One',cursive;">💰 Custo por Insumo (R$)</div>`;
+  dados.insumos.forEach(ins => {
+    htmlEst += `
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span style="font-size:1.4rem;">${ins.emoji}</span>
+        <span style="flex:1;font-size:0.88rem;font-weight:600;">${ins.nome}</span>
+        <input type="number" min="0" step="0.1" style="width:80px;" value="${ins.custo_unit}"
+          onchange="atualizarCusto('${ins.id}',this.value)">
+      </div>`;
+  });
+
+  document.getElementById('config-estoque').innerHTML = htmlEst;
+
+  // Atualiza status do Firebase na tela de config
+  renderFirebaseStatus();
+}
+
+function atualizarPreco(pid, valor) {
+  const dados = carregarDados();
+  const prod = dados.produtos.find(p => p.id === pid);
+  if (prod) prod.preco = parseFloat(valor) || 0;
+  salvarDados(dados);
+  toast('Preço atualizado!', 'sucesso');
+}
+
+function atualizarEstoqueInicial(dia, insId, valor) {
+  const dados = carregarDados();
+  if (!dados.estoque_inicial[dia]) dados.estoque_inicial[dia] = {};
+  dados.estoque_inicial[dia][insId] = parseInt(valor) || 0;
+  salvarDados(dados);
+  toast('Estoque salvo!', 'sucesso');
+}
+
+function atualizarCusto(insId, valor) {
+  const dados = carregarDados();
+  const ins = dados.insumos.find(i => i.id === insId);
+  if (ins) ins.custo_unit = parseFloat(valor) || 0;
+  salvarDados(dados);
+  toast('Custo atualizado!', 'sucesso');
+}
+
+// ============================================================
+//  FIREBASE CONFIG MODAL
+// ============================================================
+function abrirModalFirebase() {
+  const fb = getFirebaseConfig();
+  document.getElementById('input-fb-base').value = fb ? fb.base : '';
+  document.getElementById('input-fb-secret').value = fb ? fb.secret : '';
+  document.getElementById('modal-firebase').classList.add('aberto');
+}
+
+function toggleSecretVisibility() {
+  const input = document.getElementById('input-fb-secret');
+  const btn = document.getElementById('btn-toggle-secret');
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁️';
+  }
+}
+
+function fecharModalFirebase() {
+  document.getElementById('modal-firebase').classList.remove('aberto');
+}
+
+function salvarConfigFirebase() {
+  const base = document.getElementById('input-fb-base').value.trim();
+  const secret = document.getElementById('input-fb-secret').value.trim();
+
+  if (!base || !secret) {
+    toast('❌ Preencha URL e Secret', 'erro');
+    return;
+  }
+
+  // Validação básica da URL
+  if (!base.includes('firebaseio.com')) {
+    toast('❌ URL não parece ser do Firebase', 'erro');
+    return;
+  }
+
+  salvarFirebaseConfig(base, secret);
+  fecharModalFirebase();
+  renderConfig();
+
+  // Testa a conexão fazendo sync imediato
+  toast('🔥 Firebase configurado! Testando conexão...', 'sucesso');
+  sincronizarFirebase();
+}
+
+function desconectarFirebase() {
+  limparFirebaseConfig();
+  fecharModalFirebase();
+  renderConfig();
+  toast('🔌 Firebase desconectado', 'sucesso');
+}
+
+function renderFirebaseStatus() {
+  const statusEl = document.getElementById('firebase-status');
+  if (!statusEl) return;
+
+  if (isFirebaseConfigured()) {
+    const fb = getFirebaseConfig();
+    // Mostra apenas o host, sem o secret
+    const host = fb.base.replace('https://', '').replace('http://', '');
+    statusEl.innerHTML = `<span style="color:var(--verde);font-weight:700;">✅ Conectado</span> — ${host}`;
+  } else {
+    statusEl.innerHTML = `<span style="color:var(--vermelho);font-weight:700;">❌ Não configurado</span> — dados salvos apenas localmente`;
+  }
+}
+
+function confirmarReset() {
+  document.getElementById('input-confirmar-reset').value = '';
+  document.getElementById('btn-executar-reset').disabled = true;
+  document.getElementById('modal-reset').classList.add('aberto');
+
+  // Listener para habilitar botão quando digitar APAGAR
+  document.getElementById('input-confirmar-reset').oninput = function() {
+    const habilitado = this.value.toUpperCase() === 'APAGAR';
+    document.getElementById('btn-executar-reset').disabled = !habilitado;
+  };
+}
+
+function fecharModalReset() {
+  document.getElementById('modal-reset').classList.remove('aberto');
+}
+
+function executarReset() {
+  const confirmacao = document.getElementById('input-confirmar-reset').value.toUpperCase();
+  if (confirmacao !== 'APAGAR') {
+    toast('❌ Digite APAGAR para confirmar', 'erro');
+    return;
+  }
+
+  localStorage.removeItem('festaJunina');
+  estado.carrinho = {};
+  // Limpa Firebase também — deleta ambos os paths (privado + público)
+  const fb = getFirebaseConfig();
+  if (fb) {
+    fetch(fb.url, { method: 'DELETE' }).catch(() => {});
+    fetch(fb.urlPublic, { method: 'DELETE' }).catch(() => {});
+  }
+  fecharModalReset();
+  renderPDV();
+  renderConfig();
+  toast('🗑️ Todos os dados foram apagados!', 'erro');
+}
+
+// ============================================================
+//  BACKUP - EXPORTAR / IMPORTAR
+// ============================================================
+function exportarDados() {
+  const dados = carregarDados();
+  const dataStr = JSON.stringify(dados, null, 2);
+  const blob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  // Nome do arquivo com data/hora
+  const agora = new Date();
+  const timestamp = agora.toISOString().slice(0, 16).replace('T', '_').replace(':', 'h');
+  const nomeArquivo = `festa-junina-backup-${timestamp}.json`;
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = nomeArquivo;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  // Atualizar status
+  document.getElementById('backup-status').textContent =
+    `✅ Exportado: ${nomeArquivo}`;
+  toast('📥 Backup exportado com sucesso!', 'sucesso');
+}
+
+function importarDados(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const dados = JSON.parse(e.target.result);
+
+      // Validação básica da estrutura
+      if (!dados.produtos || !dados.vendas || !dados.insumos) {
+        throw new Error('Estrutura de dados inválida');
+      }
+
+      // Migrar campos novos se não existirem
+      if (!dados.caixa) dados.caixa = { 1: null, 2: null };
+      if (!dados.carrinho) dados.carrinho = {};
+
+      salvarDados(dados);
+
+      // Atualizar status
+      const numVendas = dados.vendas.length;
+      document.getElementById('backup-status').textContent =
+        `✅ Importado: ${numVendas} vendas restauradas`;
+
+      toast(`📤 Backup importado! ${numVendas} vendas restauradas.`, 'sucesso');
+
+      // Re-render telas
+      renderPDV();
+      renderConfig();
+    } catch (err) {
+      console.error('Erro ao importar:', err);
+      toast('❌ Arquivo inválido ou corrompido!', 'erro');
+      document.getElementById('backup-status').textContent =
+        `❌ Falha: arquivo inválido`;
+    }
+  };
+  reader.readAsText(file);
+
+  // Limpar input para permitir reimportar mesmo arquivo
+  event.target.value = '';
+}
+
+// ============================================================
+//  TOAST
+// ============================================================
+let toastTimer;
+function toast(msg, tipo = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show ' + tipo;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ============================================================
+//  ATALHOS DE TECLADO
+// ============================================================
+document.addEventListener('keydown', (e) => {
+  // Modal de venda aberto
+  const modalVenda = document.getElementById('modal-venda');
+  if (modalVenda.classList.contains('aberto')) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      confirmarVenda();
+    } else if (e.key === 'Escape') {
+      fecharModal();
+    }
+    return;
+  }
+
+  // Modal de estorno aberto
+  const modalEstorno = document.getElementById('modal-estorno');
+  if (modalEstorno.classList.contains('aberto')) {
+    if (e.key === 'Escape') {
+      fecharModalEstorno();
+    }
+    // Enter não confirma estorno (evitar acidentes)
+    return;
+  }
+
+  // Modal de reset aberto
+  const modalReset = document.getElementById('modal-reset');
+  if (modalReset.classList.contains('aberto')) {
+    if (e.key === 'Escape') {
+      fecharModalReset();
+    }
+    // Enter não confirma reset (segurança)
+    return;
+  }
+
+  // Modal Firebase aberto
+  const modalFirebase = document.getElementById('modal-firebase');
+  if (modalFirebase.classList.contains('aberto')) {
+    if (e.key === 'Escape') {
+      fecharModalFirebase();
+    }
+    return;
+  }
+});
+
+// ============================================================
+//  INIT
+// ============================================================
+window.addEventListener('load', () => {
+  // Garante dados iniciais no localStorage
+  const d = carregarDados();
+  salvarDados(d);
+
+  // Restaura carrinho do localStorage
+  estado.carrinho = d.carrinho || {};
+
+  // Seleciona dia 1 por padrão
+  selecionarDia(1);
+  renderPDV();
+
+  // Sync inicial com Firebase (puxa dados remotos se existirem)
+  sincronizarFirebase();
+
+  // Sync periódico a cada 60s para capturar mudanças de outros dispositivos
+  setInterval(sincronizarFirebase, 60000);
+});
+</script>
+</body>
+</html>
