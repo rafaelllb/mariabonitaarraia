@@ -533,7 +533,7 @@
   <div class="pix-section">
     <div class="pix-titulo">💰 Pague via PIX</div>
     <div class="pix-desc">Copie a chave abaixo e faca o pagamento pelo app do seu banco</div>
-    <div class="pix-chave-box" id="pix-chave">SUA_CHAVE_PIX_AQUI</div>
+    <div class="pix-chave-box" id="pix-chave">9f02fe81-3e42-40f7-8b9c-706a16288af1</div>
     <button class="btn-copiar" id="btn-copiar" onclick="copiarPix()">
       📋 Copiar Chave PIX
     </button>
@@ -577,21 +577,18 @@
 // Nenhum secret necessário — as Security Rules permitem .read: true neste path.
 const FIREBASE_URL = 'https://mbarraia-default-rtdb.firebaseio.com/barraca_public.json';
 
-// Chave PIX — substituir pelo valor real
-// TODO [ESTIGMERGIA]: Substituir pela chave PIX real
-// - Rafael vai informar a chave depois
-// - Trocar aqui E no elemento #pix-chave no HTML acima
-const CHAVE_PIX = 'SUA_CHAVE_PIX_AQUI';
+// Chave PIX aleatória (UUID) — registrada no banco de Rafael
+const CHAVE_PIX = '9f02fe81-3e42-40f7-8b9c-706a16288af1';
 
 // Cardápio fallback caso Firebase esteja offline
 // Garante que o cliente sempre veja o cardápio, mesmo sem conexão
 const PRODUTOS_FALLBACK = [
-  { id:'caldo_frango',    emoji:'🍗', nome:'Caldo de Frango 300ml',           preco:20, insumo:'caldo_frango',    qtdPorVenda:1 },
-  { id:'caldo_calabresa', emoji:'🥩', nome:'Caldo Carne c/ Calabresa 300ml',  preco:20, insumo:'caldo_calabresa', qtdPorVenda:1 },
+  { id:'caldo_frango',    emoji:'🍵', nome:'Caldo de Frango 300ml',           preco:20, insumo:'caldo_frango',    qtdPorVenda:1 },
+  { id:'caldo_calabresa', emoji:'🍵', nome:'Caldo Carne c/ Calabresa 300ml',  preco:20, insumo:'caldo_calabresa', qtdPorVenda:1 },
   { id:'milho_cozido',    emoji:'🌽', nome:'Milho Cozido',                    preco:3,  insumo:'milho_cozido',    qtdPorVenda:1 },
-  { id:'munguza',         emoji:'🟡', nome:'Mingau de Milho (Munguza) 250ml', preco:12, insumo:'munguza',         qtdPorVenda:1 },
-  { id:'canjica',         emoji:'🍚', nome:'Canjica 250ml',                   preco:15, insumo:'canjica',         qtdPorVenda:1 },
-  { id:'chocolate',       emoji:'🍫', nome:'Chocolate Quente 180ml',          preco:15, insumo:'chocolate',       qtdPorVenda:1 },
+  { id:'munguza',         emoji:'🥣', nome:'Mingau de Milho (Munguza) 250ml', preco:12, insumo:'munguza',         qtdPorVenda:1 },
+  { id:'canjica',         emoji:'🥣', nome:'Canjica 250ml',                   preco:15, insumo:'canjica',         qtdPorVenda:1 },
+  { id:'chocolate',       emoji:'🥤', nome:'Chocolate Quente 180ml',          preco:15, insumo:'chocolate',       qtdPorVenda:1 },
   { id:'cafe',            emoji:'☕', nome:'Cafe 180ml',                      preco:3,  insumo:'cafe',            qtdPorVenda:1 },
 ];
 

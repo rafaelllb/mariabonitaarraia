@@ -949,27 +949,27 @@ const DATA_VERSION = 2;
 
 const PRODUTOS_PADRAO = [
   // Caldos
-  { id:'caldo_frango',    emoji:'🍗', nome:'Caldo de Frango 300ml',           preco:20, insumo:'caldo_frango',    qtdPorVenda:1 },
-  { id:'caldo_calabresa', emoji:'🥩', nome:'Caldo Carne c/ Calabresa 300ml',  preco:20, insumo:'caldo_calabresa', qtdPorVenda:1 },
+  { id:'caldo_frango',    emoji:'🍵', nome:'Caldo de Frango 300ml',           preco:20, insumo:'caldo_frango',    qtdPorVenda:1 },
+  { id:'caldo_calabresa', emoji:'🍵', nome:'Caldo Carne c/ Calabresa 300ml',  preco:20, insumo:'caldo_calabresa', qtdPorVenda:1 },
   // Milho/derivados
   { id:'milho_cozido',    emoji:'🌽', nome:'Milho Cozido',                    preco:3,  insumo:'milho_cozido',    qtdPorVenda:1 },
-  { id:'munguza',         emoji:'🟡', nome:'Mingau de Milho (Munguza) 250ml', preco:12, insumo:'munguza',         qtdPorVenda:1 },
-  { id:'canjica',         emoji:'🍚', nome:'Canjica 250ml',                   preco:15, insumo:'canjica',         qtdPorVenda:1 },
+  { id:'munguza',         emoji:'🥣', nome:'Mingau de Milho (Munguza) 250ml', preco:12, insumo:'munguza',         qtdPorVenda:1 },
+  { id:'canjica',         emoji:'🥣', nome:'Canjica 250ml',                   preco:15, insumo:'canjica',         qtdPorVenda:1 },
   // Bebidas quentes
-  { id:'chocolate',       emoji:'🍫', nome:'Chocolate Quente 180ml',          preco:15, insumo:'chocolate',       qtdPorVenda:1 },
+  { id:'chocolate',       emoji:'🥤', nome:'Chocolate Quente 180ml',          preco:15, insumo:'chocolate',       qtdPorVenda:1 },
   { id:'cafe',            emoji:'☕', nome:'Café 180ml',                      preco:3,  insumo:'cafe',            qtdPorVenda:1 },
 ];
 
 const INSUMOS_PADRAO = [
   // Caldos
-  { id:'caldo_frango',    emoji:'🍗', nome:'Caldo de Frango',           unidade:'porção',  custo_unit:5.00 },
-  { id:'caldo_calabresa', emoji:'🥩', nome:'Caldo Carne c/ Calabresa',  unidade:'porção',  custo_unit:5.00 },
+  { id:'caldo_frango',    emoji:'🍵', nome:'Caldo de Frango',           unidade:'porção',  custo_unit:5.00 },
+  { id:'caldo_calabresa', emoji:'🍵', nome:'Caldo Carne c/ Calabresa',  unidade:'porção',  custo_unit:5.00 },
   // Milho/derivados
   { id:'milho_cozido',    emoji:'🌽', nome:'Milho Cozido',              unidade:'unidade', custo_unit:0.50 },
-  { id:'munguza',         emoji:'🟡', nome:'Mingau de Milho (Munguza)', unidade:'porção',  custo_unit:3.00 },
-  { id:'canjica',         emoji:'🍚', nome:'Canjica',                   unidade:'porção',  custo_unit:3.00 },
+  { id:'munguza',         emoji:'🥣', nome:'Mingau de Milho (Munguza)', unidade:'porção',  custo_unit:3.00 },
+  { id:'canjica',         emoji:'🥣', nome:'Canjica',                   unidade:'porção',  custo_unit:3.00 },
   // Bebidas quentes
-  { id:'chocolate',       emoji:'🍫', nome:'Chocolate Quente',          unidade:'xícara',  custo_unit:3.00 },
+  { id:'chocolate',       emoji:'🥤', nome:'Chocolate Quente',          unidade:'xícara',  custo_unit:3.00 },
   { id:'cafe',            emoji:'☕', nome:'Café',                      unidade:'xícara',  custo_unit:0.50 },
 ];
 
@@ -1355,15 +1355,6 @@ function renderDashboard() {
   const topId = Object.entries(contagem).sort((a,b) => b[1]-a[1])[0];
   const topProd = topId ? dados.produtos.find(p => p.id === topId[0]) : null;
 
-  // Custo estimado
-  let custoTotal = 0;
-  vendasFiltro.forEach(v => v.itens.forEach(item => {
-    const prod = dados.produtos.find(p => p.id === item.id);
-    const insumo = dados.insumos.find(i => i.id === prod?.insumo);
-    if (prod && insumo) custoTotal += insumo.custo_unit * prod.qtdPorVenda * item.qtd;
-  }));
-  const lucro = totalVendas - custoTotal;
-
   const tituloDb = dia === 0 ? 'Total dos 2 Dias' : `Dia ${dia}`;
 
   document.getElementById('dashboard-content').innerHTML = `
@@ -1388,12 +1379,7 @@ function renderDashboard() {
       <div style="text-align:center;color:var(--muted);font-size:0.85rem;">${topId[1]} unidades vendidas</div>`
       : '<div class="sem-dados">Nenhuma venda ainda</div>'}
     </div>
-    <div class="card">
-      <div class="card-titulo">💡 Estimativa de Resultado</div>
-      <div class="rel-linha"><span>Total vendido</span><span style="color:var(--verde);font-weight:700;">R$ ${totalVendas.toFixed(2).replace('.',',')}</span></div>
-      <div class="rel-linha custo"><span>Custo estimado</span><span>− R$ ${custoTotal.toFixed(2).replace('.',',')}</span></div>
-      <div class="rel-linha total"><span>Lucro estimado</span><span>R$ ${lucro.toFixed(2).replace('.',',')}</span></div>
-    </div>`;
+    `;
 }
 
 // ============================================================
@@ -1546,13 +1532,6 @@ function renderRelatorio() {
     // Ignora vendas estornadas
     const vendas = dados.vendas.filter(v => v.dia === dia && !v.estornada);
     const totalDia = vendas.reduce((a, v) => a + v.total, 0);
-    let custoDia = 0;
-    vendas.forEach(v => v.itens.forEach(item => {
-      const prod = dados.produtos.find(p => p.id === item.id);
-      const insumo = dados.insumos.find(i => i.id === prod?.insumo);
-      if (prod && insumo) custoDia += insumo.custo_unit * prod.qtdPorVenda * item.qtd;
-    }));
-
     // Contagem por produto
     const contagem = {};
     vendas.forEach(v => v.itens.forEach(item => {
@@ -1565,8 +1544,6 @@ function renderRelatorio() {
         <div class="rel-titulo">📅 Dia ${dia} — Resumo</div>
         <div class="rel-linha"><span>Vendas realizadas</span><span>${vendas.length}</span></div>
         <div class="rel-linha"><span>Receita total</span><span style="color:var(--verde);font-weight:700;">R$ ${totalDia.toFixed(2).replace('.',',')}</span></div>
-        <div class="rel-linha custo"><span>Custo estimado</span><span>− R$ ${custoDia.toFixed(2).replace('.',',')}</span></div>
-        <div class="rel-linha total"><span>Lucro estimado</span><span>R$ ${(totalDia-custoDia).toFixed(2).replace('.',',')}</span></div>
         ${ranking.length > 0 ? `
         <hr class="festivo" style="margin:10px 0">
         <div style="font-size:0.78rem;color:var(--muted);font-weight:700;margin-bottom:8px;">MAIS VENDIDOS</div>
@@ -1580,21 +1557,11 @@ function renderRelatorio() {
   // TOTAL GERAL (ignora estornadas)
   const todasVendas = dados.vendas.filter(v => !v.estornada);
   const totalGeral = todasVendas.reduce((a, v) => a + v.total, 0);
-  let custoGeral = 0;
-  todasVendas.forEach(v => v.itens.forEach(item => {
-    const prod = dados.produtos.find(p => p.id === item.id);
-    const insumo = dados.insumos.find(i => i.id === prod?.insumo);
-    if (prod && insumo) custoGeral += insumo.custo_unit * prod.qtdPorVenda * item.qtd;
-  }));
-
   html += `
     <div class="rel-section" style="background:linear-gradient(135deg,#E8F8EF,#D5F5E3);border-color:#A9DFBF;">
       <div class="rel-titulo" style="color:var(--verde)">🏆 RESULTADO GERAL DA FESTA</div>
       <div class="rel-linha"><span>Total de vendas</span><span>${todasVendas.length}</span></div>
       <div class="rel-linha total" style="font-size:1.1rem;"><span>Receita total</span><span>R$ ${totalGeral.toFixed(2).replace('.',',')}</span></div>
-      <div class="rel-linha custo"><span>Custo estimado</span><span>− R$ ${custoGeral.toFixed(2).replace('.',',')}</span></div>
-      <div class="rel-linha total" style="font-size:1.2rem;"><span>💰 Lucro estimado</span><span>R$ ${(totalGeral-custoGeral).toFixed(2).replace('.',',')}</span></div>
-      <div style="margin-top:12px;text-align:center;font-size:0.8rem;color:var(--muted);">* Custo baseado nos valores configurados por insumo</div>
     </div>`;
 
   document.getElementById('relatorio-content').innerHTML = html;
